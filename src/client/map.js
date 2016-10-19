@@ -1,3 +1,6 @@
+const ZOOM_MIN = 0.025;
+const ZOOM_MAX = 1;
+
 let mapImage;
 
 let hasInit = false;
@@ -22,17 +25,19 @@ function init(canvasWidth, canvasHeight) {
 }
 
 function draw(context) {
+  context.save();
+  context.translate(-x, -y);
+  context.scale(1 / zoomDelta, 1 / zoomDelta);
+
   context.drawImage(
     mapImage,
-    x,
-    y,
-    width,
-    height,
     0,
     0,
-    width / zoomDelta,
-    height / zoomDelta
+    imageWidth,
+    imageHeight
   );
+
+  context.restore();
 
   if (!hasInit) {
     return;
@@ -40,20 +45,17 @@ function draw(context) {
 }
 
 function pan(deltaX, deltaY) {
-  x += deltaX * zoomDelta; 
-  y += deltaY * zoomDelta;
+  x += deltaX; 
+  y += deltaY;
 }
 
 function zoom(zoomX, zoomY, delta) {
   const oldDelta = zoomDelta;
-  zoomDelta += delta * 0.001;
+  zoomDelta += delta * 0.00025;
+  zoomDelta = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoomDelta));
   const scaleChange = zoomDelta - oldDelta;
-  x -= zoomX * scaleChange;
-  y -= zoomY * scaleChange;
-  width -= zoomX * scaleChange;
-  height -= zoomY * scaleChange;
-  width = Math.max(width, imageWidth);
-  height = Math.max(height, imageHeight);
+  x += zoomX * scaleChange;
+  y += zoomY * scaleChange;
 }
 
 export default {

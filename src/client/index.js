@@ -1,4 +1,5 @@
 import { scaleCanvas } from './canvas_tools';
+import { throttle } from 'lodash';
 import Map from './map';
 
 let context;
@@ -8,7 +9,6 @@ let lastX;
 let lastY;
 
 function initialize() {
-  console.log('Initializing');
   const canvas = document.querySelector('canvas');   
   context = canvas.getContext('2d');
   Map.init(window.innerWidth, window.innerHeight);
@@ -20,8 +20,11 @@ function initialize() {
 
   canvas.addEventListener('wheel', (event) => {
     event.preventDefault();
-    Map.zoom(event.pageX, event.pageY, event.wheelDeltaY);
   });
+
+  canvas.addEventListener('wheel', throttle((event) => {
+    Map.zoom(event.pageX, event.pageY, event.wheelDeltaY);
+  }, 0));
 
   canvas.addEventListener('mousedown', (event) => {
     isPanning = true;
