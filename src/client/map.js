@@ -1,7 +1,7 @@
 const ZOOM_MIN = 0.025;
 const ZOOM_MAX = 1;
+const territories = [];
 
-let mapImage;
 
 let hasInit = false;
 let x = 0;
@@ -15,27 +15,28 @@ let zoomDelta = 1;
 function init(canvasWidth, canvasHeight) {
   width = canvasWidth;
   height = canvasHeight;
-  mapImage = new Image();
-  mapImage.addEventListener('load', (event) => {
-    hasInit = true;
-    imageWidth = mapImage.width;
-    imageHeight = mapImage.height;
-  });
-  mapImage.src = require('!!url!./images/world.svg');
+	const svgContainer = document.createElement('section');
+	svgContainer.innerHTML = require('./images/world.svg');
+	const paths = svgContainer.querySelectorAll('path');
+	for (let i = 0; i < paths.length; i++) {
+		const territory = paths[i];
+		const path = new Path2D(territory.getAttribute('d'));
+		territories[territory.getAttribute('data-name')] = path;	
+	}
 }
 
 function draw(context) {
+	context.clearRect(0, 0, width, height);
+	context.fillStyle = 'aqua';
+	context.fillRect(0, 0, width, height);
   context.save();
-  context.translate(-x, -y);
   context.scale(1 / zoomDelta, 1 / zoomDelta);
-
-  context.drawImage(
-    mapImage,
-    0,
-    0,
-    imageWidth,
-    imageHeight
-  );
+  context.translate(-x, -y);
+	context.fillStyle = 'forestgreen';
+	Object.keys(territories).forEach((name) => {
+  	context.fill(territories[name]);
+		context.stroke(territories[name]);
+	})
 
   context.restore();
 
@@ -54,8 +55,11 @@ function zoom(zoomX, zoomY, delta) {
   zoomDelta += delta * 0.00025;
   zoomDelta = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoomDelta));
   const scaleChange = zoomDelta - oldDelta;
-  x += zoomX * scaleChange;
-  y += zoomY * scaleChange;
+	if (scaleChange === 0) { 
+		return;
+	}
+  x -= zoomX * scaleChange;
+  y -= zoomY * scaleChange;
 }
 
 export default {
