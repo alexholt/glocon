@@ -33,6 +33,7 @@ function draw(context) {
   context.scale(1 / zoomDelta, 1 / zoomDelta);
   context.translate(-x, -y);
 	context.fillStyle = 'forestgreen';
+	context.lineCap = 'square';
 	Object.keys(territories).forEach((name) => {
   	context.fill(territories[name]);
 		context.stroke(territories[name]);
@@ -46,8 +47,8 @@ function draw(context) {
 }
 
 function pan(deltaX, deltaY) {
-  x += deltaX; 
-  y += deltaY;
+  x += deltaX * zoomDelta; 
+  y += deltaY * zoomDelta;
 }
 
 function zoom(zoomX, zoomY, delta) {
