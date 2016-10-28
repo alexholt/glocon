@@ -1,6 +1,7 @@
 import { scaleCanvas } from './canvas_tools';
 import { throttle } from 'lodash';
 import Map from './map';
+import UnitManager from './unit_manager';
 
 let context;
 
@@ -12,6 +13,7 @@ function initialize() {
   const canvas = document.querySelector('canvas');   
   context = canvas.getContext('2d');
   Map.init(window.innerWidth, window.innerHeight);
+  UnitManager.init(Map.getTerritories());
   scaleCanvas(canvas, window.innerWidth, window.innerHeight);
 
   window.addEventListener('resize', () => {
@@ -61,6 +63,7 @@ function initialize() {
 
 function render(timestamp) {
   Map.draw(context);
+  UnitManager.draw(context, Map.getScale(), Map.getOffsetX(), Map.getOffsetY());
   window.requestAnimationFrame(render);
 }
 

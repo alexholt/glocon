@@ -1,7 +1,8 @@
+import { cloneDeep } from 'lodash';
+
 const ZOOM_MIN = 0.025;
 const ZOOM_MAX = 1;
-const territories = [];
-
+const territories = {};
 
 let hasInit = false;
 let x = 0;
@@ -20,8 +21,12 @@ function init(canvasWidth, canvasHeight) {
 	const paths = svgContainer.querySelectorAll('path');
 	for (let i = 0; i < paths.length; i++) {
 		const territory = paths[i];
-		const path = new Path2D(territory.getAttribute('d'));
-		territories[territory.getAttribute('data-name')] = path;	
+    const pathData = territory.getAttribute('d');
+		const path = new Path2D(pathData);
+		territories[territory.getAttribute('data-name')] = {
+      path,
+      pathData,
+    };
 	}
 }
 
@@ -35,8 +40,8 @@ function draw(context) {
 	context.fillStyle = 'forestgreen';
 	context.lineCap = 'square';
 	Object.keys(territories).forEach((name) => {
-  	context.fill(territories[name]);
-		context.stroke(territories[name]);
+  	context.fill(territories[name].path);
+		context.stroke(territories[name].path);
 	})
 
   context.restore();
@@ -63,9 +68,29 @@ function zoom(zoomX, zoomY, delta) {
   y -= zoomY * scaleChange;
 }
 
+function getTerritories() {
+  return cloneDeep(territories);
+}
+
+function getScale() {
+  return zoomDelta;
+}
+
+function getOffsetX() {
+  return x; 
+}
+
+function getOffsetY() {
+  return y;
+}
+
 export default {
   init,
   draw,
   pan,
   zoom,
+  getTerritories,
+  getScale,
+  getOffsetX,
+  getOffsetY,
 };
