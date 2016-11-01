@@ -1,3 +1,4 @@
+import Territory from './territory';
 import { cloneDeep } from 'lodash';
 
 const ZOOM_MIN = 0.025;
@@ -22,11 +23,7 @@ function init(canvasWidth, canvasHeight) {
 	for (let i = 0; i < paths.length; i++) {
 		const territory = paths[i];
     const pathData = territory.getAttribute('d');
-		const path = new Path2D(pathData);
-		territories[territory.getAttribute('data-name')] = {
-      path,
-      pathData,
-    };
+		territories[territory.getAttribute('data-name')] = new Territory(pathData);
 	}
 }
 
@@ -40,8 +37,8 @@ function draw(context) {
 	context.fillStyle = 'forestgreen';
 	context.lineCap = 'square';
 	Object.keys(territories).forEach((name) => {
-  	context.fill(territories[name].path);
-		context.stroke(territories[name].path);
+  	context.fill(territories[name].getPathObj());
+		context.stroke(territories[name].getPathObj());
 	})
 
   context.restore();
