@@ -20,15 +20,15 @@ function initialize() {
     scaleCanvas(canvas, window.innerWidth, window.innerHeight);
   });
 
-  canvas.addEventListener('wheel', (event) => {
+  document.addEventListener('wheel', (event) => {
     event.preventDefault();
   });
 
-  canvas.addEventListener('wheel', throttle((event) => {
+  document.addEventListener('wheel', throttle((event) => {
     Map.zoom(event.pageX, event.pageY, event.wheelDeltaY);
   }, 0));
 
-  canvas.addEventListener('mousedown', (event) => {
+  document.addEventListener('mousedown', (event) => {
     isPanning = true;
     const { pageX, pageY } = event;
     lastX = pageX;
@@ -36,7 +36,7 @@ function initialize() {
     canvas.style.cursor = 'move';
   });
 
-  canvas.addEventListener('mousemove', (event) => {
+  document.addEventListener('mousemove', (event) => {
     if (!isPanning) {
       return;
     }
@@ -48,12 +48,12 @@ function initialize() {
     Map.pan(deltaX, deltaY);
   });
 
-  canvas.addEventListener('mouseout', (event) => {
+  document.addEventListener('mouseleave', (event) => {
     isPanning = false;
     canvas.style.cursor = 'default';
   });
 
-  canvas.addEventListener('mouseup', (event) => {
+  document.addEventListener('mouseup', (event) => {
     isPanning = false;
     canvas.style.cursor = 'default';
   });
