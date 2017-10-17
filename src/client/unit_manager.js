@@ -30,7 +30,6 @@ function attachEventHandlers(el) {
 }
 
 function draw(context, scale, offsetX, offsetY) {
-  return;
   Object.keys(territories).forEach((territory) => {
     let { x, y, x2, y2 } = territories[territory].getBoundingBox();
     x = (x2 - x) / 2 + x;

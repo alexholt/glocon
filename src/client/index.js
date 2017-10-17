@@ -10,7 +10,7 @@ let lastX;
 let lastY;
 
 function initialize() {
-  const canvas = document.querySelector('canvas');   
+  const canvas = document.querySelector('canvas');
   context = canvas.getContext('2d');
   Map.init(window.innerWidth, window.innerHeight);
   UnitManager.init(Map.getTerritories());
@@ -25,8 +25,8 @@ function initialize() {
   });
 
   document.addEventListener('wheel', throttle((event) => {
-    Map.zoom(event.pageX, event.pageY, event.wheelDeltaY);
-  }, 0));
+    Map.zoom(event.pageX, event.pageY, event.deltaY);
+  }, 50));
 
   document.addEventListener('mousedown', (event) => {
     isPanning = true;
