@@ -15,6 +15,7 @@ let stats;
 function initialize() {
   initializeFPS();
   const canvas = document.querySelector('canvas');
+
   context = canvas.getContext('2d');
   Map.init(window.innerWidth, window.innerHeight);
   UnitManager.init(Map.getTerritories());

@@ -11,48 +11,39 @@ const config = {
   ],
   output: {
     path: __dirname + '/public',
-    filename: '/[name].js?h=[hash]'
+    filename: '[name].js?h=[hash]'
   },
   module: {
     loaders: [{
       test: /\.jsx$/,
-      loader: 'babel',
+      loader: 'babel-loader',
       include: path.resolve('./src')
     }, {
       test: /\.js$/,
-      loader: 'babel',
+      loader: 'babel-loader',
       include: path.resolve('./src')
     }, {
       test: /\.scss$/,
-      loader: 'style?singleton!css!postcss!sass'
+      loader: 'style-loader?singleton!css-loader!postcss-loader!sass-loader'
     }, {
       test: /\.css$/,
-      loader: 'style!css?sourceMap'
+      loader: 'style-loader!css-loader?sourceMap'
     }, {
       test: /\.(ico|png|jpg|gif)$/,
-      loader: 'url?name=images/img-[hash:6].[ext]'
+      loader: 'url-loader?name=images/img-[hash:6].[ext]'
     }, {
       test: /\.md$/,
-      loader: 'html!markdown'
+      loader: 'html-loader!markdown-loader'
     }, {
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'svg-inline'
+      loader: 'svg-inline-loader'
     }, {
       test: /\.html$/,
-      loader: 'html'
+      loader: 'html-loader'
     }],
   },
-  babel: {
-    presets: ['es2015', 'stage-0'],
-  },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.scss', '.css'],
-  },
-  postcss: function () {
-    return [precss, autoprefixer];
-  },
-  htmlLoader: {
-    ignoreCustomFragments: [/\{\{.*}}/],
+    extensions: ['.js', '.jsx', '.scss', '.css'],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -70,12 +61,24 @@ const config = {
       ),
       'SERVER_URL': JSON.stringify(process.env.SERVER_URL ? process.env.SERVER_URL : ''),
     }),
+    new Webpack.LoaderOptionsPlugin({
+      debug: true,
+      htmlLoader: {
+        ignoreCustomFragments: [/\{\{.*}}/],
+      },
+      postcss: function () {
+        return [precss, autoprefixer];
+      },
+      babel: {
+        presets: ['es2015', 'stage-0'],
+      },
+    }),
   ],
 };
 
 if (process.env.NODE_ENV !== 'production') {
   const port = process.env.PORT || 8080;
-  
+
   config.devServer = {
     contentBase: __dirname + '/public',
     host: 'localhost',
@@ -84,20 +87,14 @@ if (process.env.NODE_ENV !== 'production') {
     hot: true,
     historyApiFallback: true
   };
-  
-  config.entry.push(
-    require.resolve('webpack-dev-server/client') +
-    `?http://localhost:${port}`
-  );
 
   config.entry.push(
     require.resolve('webpack/hot/dev-server')
   );
-  
+
   config.plugins.concat(new Webpack.HotModuleReplacementPlugin());
-  
+
   config.devtool = 'source-map';
-  config.debug = true;
 }
 
 module.exports = config;
