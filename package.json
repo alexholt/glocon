@@ -50,6 +50,7 @@
     "postcss-loader": "^0.13.0",
     "precss": "^1.4.0",
     "sass-loader": "^4.0.2",
+    "stats.js": "^0.17.0",
     "style-loader": "^0.13.1",
     "svg-inline-loader": "^0.7.0",
     "svg-loader": "0.0.2",

@@ -2,14 +2,18 @@ import { scaleCanvas } from './canvas_tools';
 import { throttle } from 'lodash';
 import Map from './map';
 import UnitManager from './unit_manager';
+import Stats from 'stats.js';
 
 let context;
 
 let isPanning = false;
 let lastX;
 let lastY;
+let lastFrame;
+let stats;
 
 function initialize() {
+  initializeFPS();
   const canvas = document.querySelector('canvas');
   context = canvas.getContext('2d');
   Map.init(window.innerWidth, window.innerHeight);
@@ -61,9 +65,15 @@ function initialize() {
   window.requestAnimationFrame(render);
 }
 
+function initializeFPS() {
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
+}
+
 function render(timestamp) {
   Map.draw(context);
   UnitManager.draw(context, Map.getScale(), Map.getOffsetX(), Map.getOffsetY());
+  stats.update();
   window.requestAnimationFrame(render);
 }
 
