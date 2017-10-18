@@ -5,14 +5,13 @@ let tanks = {};
 let isArrowShown = false;
 let arrow;
 let tank;
+let territoryKeys;
 
 function init(_territories) {
   territories = _territories;
-	tank = document.createElement('section');
-  tank.classList.add('unit');
-	tank.innerHTML = require('./images/tank.svg');
-  tank.style.width = SIZE + 'px';
-  tank.style.height = SIZE + 'px';
+  territoryKeys = Object.keys(territories);
+	tank = document.createElement('img');
+	tank.src = `data:image/svg+xml;utf8,${require('./images/tank.svg')}`;
 
   arrow = document.createElement('section');
   arrow.classList.add('arrow');
@@ -30,32 +29,17 @@ function attachEventHandlers(el) {
 }
 
 function draw(context, scale, offsetX, offsetY) {
-  Object.keys(territories).forEach((territory) => {
+  territoryKeys.forEach((territory) => {
     let { x, y, x2, y2 } = territories[territory].getBoundingBox();
     x = (x2 - x) / 2 + x;
     y = (y2 - y) / 2 + y;
     x = (x - offsetX) / scale - SIZE / 2;
     y = (y - offsetY) / scale - SIZE / 2;
-    let unit;
 
-    if (!tanks[territory]) {
-      unit = tanks[territory] = tank.cloneNode(true);
-      attachEventHandlers(unit);
-      document.querySelector('main').appendChild(unit);
-    } else {
-      unit = tanks[territory];
-    }
-
-    if (unit.style.left !== Math.round(x) + 'px') {
-      unit.style.left = Math.round(x) + 'px';
-    }
-
-    if (unit.style.top !== Math.round(y) + 'px') {
-      unit.style.top = Math.round(y) + 'px';
-    }
+    context.drawImage(tank, x, y, SIZE, SIZE * 1.5);
   });
 
-  drawArrow(context, scale, offsetX, offsetY);
+  //drawArrow(context, scale, offsetX, offsetY);
 }
 
 function drawArrow(context, scale, offsetX, offsetY) {
