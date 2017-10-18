@@ -36,7 +36,7 @@ const config = {
       loader: 'html-loader!markdown-loader'
     }, {
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'svg-inline-loader'
+      loader: 'raw-loader'
     }, {
       test: /\.html$/,
       loader: 'html-loader'

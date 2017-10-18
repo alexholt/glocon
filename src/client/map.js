@@ -13,6 +13,7 @@ let height = 0;
 let imageWidth = 0;
 let imageHeight = 0;
 let zoomDelta = 1;
+let lastActive = {};
 
 function init(canvasWidth, canvasHeight) {
   width = canvasWidth;
@@ -34,9 +35,17 @@ function draw(context) {
   context.save();
   context.scale(1 / zoomDelta, 1 / zoomDelta);
   context.translate(-x, -y);
-	context.fillStyle = 'forestgreen';
 	context.lineCap = 'square';
+
 	Object.keys(territories).forEach((name) => {
+    context.lineWidth = 1 * zoomDelta;
+	  context.fillStyle = 'forestgreen';
+
+    if (territories[name].isActive) {
+      context.lineWidth = 5 * zoomDelta;
+	    context.fillStyle = '#227a22';
+    }
+
   	context.fill(territories[name].getPathObj());
 		context.stroke(territories[name].getPathObj());
 	})
@@ -49,7 +58,7 @@ function draw(context) {
 }
 
 function pan(deltaX, deltaY) {
-  x += deltaX * zoomDelta; 
+  x += deltaX * zoomDelta;
   y += deltaY * zoomDelta;
 }
 
@@ -58,7 +67,7 @@ function zoom(zoomX, zoomY, delta) {
   zoomDelta += delta * 0.00025;
   zoomDelta = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoomDelta));
   const scaleChange = zoomDelta - oldDelta;
-	if (scaleChange === 0) { 
+	if (scaleChange === 0) {
 		return;
 	}
   x -= zoomX * scaleChange;
@@ -74,11 +83,42 @@ function getScale() {
 }
 
 function getOffsetX() {
-  return x; 
+  return x;
 }
 
 function getOffsetY() {
   return y;
+}
+
+function handleClick({pageX, pageY}) {
+  const active = Object.keys(territories).find(territory => {
+    const area = territories[territory];
+    let { x, y, x2, y2 } = area.getBoundingBox();
+    const offsetX = getOffsetX();
+    const offsetY = getOffsetY();
+
+    x -= offsetX;
+    y -= offsetY;
+    x2 -= offsetX;
+    y2 -= offsetY;
+
+    x /= zoomDelta;
+    y /= zoomDelta;
+    x2 /= zoomDelta;
+    y2 /= zoomDelta;
+
+    if (x < pageX && pageX < x2 && y < pageY && pageY < y2) {
+      return true;
+    }
+    return false;
+  });
+
+  if (active) {
+    lastActive.isActive = false;
+    lastActive = territories[active];
+    console.log(active);
+    lastActive.isActive = true;
+  }
 }
 
 export default {
@@ -90,4 +130,5 @@ export default {
   getScale,
   getOffsetX,
   getOffsetY,
+  handleClick,
 };

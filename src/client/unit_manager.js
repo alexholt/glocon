@@ -11,7 +11,7 @@ function init(_territories) {
   territories = _territories;
   territoryKeys = Object.keys(territories);
 	tank = document.createElement('img');
-	tank.src = `data:image/svg+xml;utf8,${require('./images/tank.svg')}`;
+	tank.src = `data:image/svg+xml;utf-8,${require('./images/tank.svg')}`;
 
   arrow = document.createElement('section');
   arrow.classList.add('arrow');
@@ -36,7 +36,15 @@ function draw(context, scale, offsetX, offsetY) {
     x = (x - offsetX) / scale - SIZE / 2;
     y = (y - offsetY) / scale - SIZE / 2;
 
-    context.drawImage(tank, x, y, SIZE, SIZE * 1.5);
+    if (scale > 0.5) {
+      context.fillStyle = '#b2b5af';
+      context.fillRect(x, y, SIZE / 2, SIZE / 2);
+      context.fillStyle = 'black';
+      context.font = '10px monospace';
+      context.fillText('12', x, y + (SIZE / 4));
+    } else {
+      context.drawImage(tank, x, y, SIZE, SIZE * 1.5);
+    }
   });
 
   //drawArrow(context, scale, offsetX, offsetY);

@@ -63,6 +63,10 @@ function initialize() {
     canvas.style.cursor = 'default';
   });
 
+  document.addEventListener('click', (event) => {
+    Map.handleClick(event);
+  });
+
   window.requestAnimationFrame(render);
 }
 
