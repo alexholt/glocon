@@ -7,7 +7,7 @@ const Webpack = require('webpack');
 const config = {
   entry: [
     './src/client/index.js',
-    './src/client/styles/index.scss',
+    './src/client/styles/index.css',
   ],
   output: {
     path: __dirname + '/public',
@@ -24,7 +24,7 @@ const config = {
       include: path.resolve('./src')
     }, {
       test: /\.scss$/,
-      loader: 'style-loader?singleton!css-loader!postcss-loader!sass-loader'
+      loader: 'style-loader?singleton!css-loader!postcss-loader'
     }, {
       test: /\.css$/,
       loader: 'style-loader!css-loader?sourceMap'
@@ -81,7 +81,7 @@ if (process.env.NODE_ENV !== 'production') {
 
   config.devServer = {
     contentBase: __dirname + '/public',
-    host: 'localhost',
+    host: '0.0.0.0',
     port,
     publicPath: '/',
     hot: true,
