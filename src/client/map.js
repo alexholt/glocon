@@ -113,12 +113,15 @@ function handleClick({pageX, pageY}) {
     return false;
   });
 
-  if (active) {
+  if (!active || lastActive === territories[active] && lastActive.isActive) {
     lastActive.isActive = false;
-    lastActive = territories[active];
-    console.log(active);
-    lastActive.isActive = true;
+    return;
   }
+
+  lastActive.isActive = false;
+  lastActive = territories[active];
+  console.log(active);
+  lastActive.isActive = true;
 }
 
 export default {
