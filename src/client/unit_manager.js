@@ -11,14 +11,13 @@ function init(_territories) {
   territories = _territories;
   territoryKeys = Object.keys(territories);
 	tank = document.createElement('img');
-	tank.src = `data:image/svg+xml;utf-8,${require('./images/tank.svg')}`;
+  tank.src = `data:image/svg+xml;utf-8,${encodeURIComponent(require('./images/tank.svg'))}`;
 
   arrow = document.createElement('section');
   arrow.classList.add('arrow');
   arrow.innerHTML = require('./images/movement_arrow.svg');
   arrow.style.width = SIZE * 4 + 'px';
   arrow.style.height = SIZE + 'px';
-  document.querySelector('main').appendChild(arrow);
 }
 
 function attachEventHandlers(el) {

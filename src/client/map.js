@@ -12,14 +12,15 @@ let width = 0;
 let height = 0;
 let imageWidth = 0;
 let imageHeight = 0;
-let zoomDelta = 1;
+let zoomDelta = 0.5;
 let lastActive = {};
+let lastClickedPoint;
 
 function init(canvasWidth, canvasHeight) {
   width = canvasWidth;
   height = canvasHeight;
 	const svgContainer = document.createElement('section');
-	svgContainer.innerHTML = require('./images/world.svg');
+  svgContainer.innerHTML = require('./images/world.svg');
 	const paths = svgContainer.querySelectorAll('path');
 	for (let i = 0; i < paths.length; i++) {
 		const territory = paths[i];
@@ -35,7 +36,7 @@ function draw(context) {
   context.save();
   context.scale(1 / zoomDelta, 1 / zoomDelta);
   context.translate(-x, -y);
-	context.lineCap = 'square';
+	context.lineCap = 'round';
 
 	Object.keys(territories).forEach((name) => {
     context.lineWidth = 1 * zoomDelta;
@@ -47,8 +48,12 @@ function draw(context) {
     }
 
   	context.fill(territories[name].getPathObj());
-		context.stroke(territories[name].getPathObj());
-	})
+    context.stroke(territories[name].getPathObj());
+
+    if (lastClickedPoint && context.isPointInPath(...lastClickedPoint)) {
+      setActive(active);
+    }
+	});
 
   context.restore();
 
@@ -91,28 +96,11 @@ function getOffsetY() {
 }
 
 function handleClick({pageX, pageY}) {
-  const active = Object.keys(territories).find(territory => {
-    const area = territories[territory];
-    let { x, y, x2, y2 } = area.getBoundingBox();
-    const offsetX = getOffsetX();
-    const offsetY = getOffsetY();
+  lastClickedPoint = [pageX, pageY];
+}
 
-    x -= offsetX;
-    y -= offsetY;
-    x2 -= offsetX;
-    y2 -= offsetY;
-
-    x /= zoomDelta;
-    y /= zoomDelta;
-    x2 /= zoomDelta;
-    y2 /= zoomDelta;
-
-    if (x < pageX && pageX < x2 && y < pageY && pageY < y2) {
-      return true;
-    }
-    return false;
-  });
-
+function setActive(name) {
+  active = name;
   if (!active || lastActive === territories[active] && lastActive.isActive) {
     lastActive.isActive = false;
     return;
@@ -122,6 +110,20 @@ function handleClick({pageX, pageY}) {
   lastActive = territories[active];
   console.log(active);
   lastActive.isActive = true;
+}
+
+function handleEdgePan(lastX, lastY) {
+  if (!lastX || !lastY) return;
+
+  const lowerX = 0.2 * width;
+  const upperX = width - 0.2 * width;
+  const lowerY = 0.2 * height;
+  const upperY = height - 0.2 * height;
+
+  if (lastX < lowerX) pan(-10, 0);
+  if (lastX > upperX) pan(10, 0);
+  if (lastY > upperY) pan(0, 10);
+  if (lastY < lowerY) pan(0, -10);
 }
 
 export default {
@@ -134,4 +136,5 @@ export default {
   getOffsetX,
   getOffsetY,
   handleClick,
+  handleEdgePan,
 };

@@ -11,6 +11,7 @@ let lastX;
 let lastY;
 let lastFrame;
 let stats;
+let positionBox;
 
 function initialize() {
   initializeFPS();
@@ -30,7 +31,13 @@ function initialize() {
   });
 
   document.addEventListener('wheel', throttle((event) => {
-    Map.zoom(event.pageX, event.pageY, event.deltaY);
+    let deltaY = event.deltaY;
+
+    // FF (57.0b10) uses lines for the mousewheel scroll delta
+    // https://w3c.github.io/uievents/#idl-wheelevent 
+    if (event.deltaMode === 1) deltaY *= 20;
+
+    Map.zoom(event.pageX, event.pageY, deltaY);
   }, 50));
 
   document.addEventListener('mousedown', (event) => {
@@ -42,19 +49,30 @@ function initialize() {
   });
 
   document.addEventListener('mousemove', (event) => {
-    if (!isPanning) {
-      return;
-    }
     const { pageX, pageY } = event;
+    const transformedX = pageX * Map.getScale() + Map.getOffsetX();
+    const transformedY = pageY * Map.getScale() + Map.getOffsetY();
+    positionBox.innerText =
+      `(${pageX}, ${pageY})
+      [${transformedX.toFixed(0)}, ${transformedY.toFixed(0)}]
+      `;
+
     const deltaX = lastX - pageX;
     const deltaY = lastY - pageY;
     lastX = pageX;
     lastY = pageY;
+
+    if (!isPanning) {
+      return;
+    }
+
     Map.pan(deltaX, deltaY);
   });
 
-  document.addEventListener('mouseleave', (event) => {
+  document.addEventListener('mouseout', (event) => {
     isPanning = false;
+    lastX = null;
+    lastY = null;
     canvas.style.cursor = 'default';
   });
 
@@ -72,10 +90,19 @@ function initialize() {
 
 function initializeFPS() {
   stats = new Stats();
+  stats.dom.setAttribute(
+    'style',
+    'position: fixed; top: 10px; right: 0; width: 100px'
+  );
+  positionBox = document.createElement('div');
+  positionBox.setAttribute('id', 'position');
+  positionBox.style.fontWeight = '800';
+  stats.dom.appendChild(positionBox);
   document.body.appendChild(stats.dom);
 }
 
 function render(timestamp) {
+  Map.handleEdgePan(lastX, lastY);
   Map.draw(context);
   UnitManager.draw(context, Map.getScale(), Map.getOffsetX(), Map.getOffsetY());
   stats.update();
