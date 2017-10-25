@@ -1,17 +1,29 @@
 const SIZE = 40;
+const TOKEN_WIDTH = 90;
+const TOKEN_HEIGHT = 100;
+const TOKEN_PADDING = 5;
 
 let territories = {};
 let tanks = {};
 let isArrowShown = false;
 let arrow;
 let tank;
+let troop;
+let plane;
 let territoryKeys;
 
 function init(_territories) {
   territories = _territories;
   territoryKeys = Object.keys(territories);
+
 	tank = document.createElement('img');
-  tank.src = `data:image/svg+xml;utf-8,${encodeURIComponent(require('./images/tank.svg'))}`;
+  tank.src = require('./images/1x/tank.png');
+
+	troop = document.createElement('img');
+  troop.src = require('./images/1x/troop.png');
+
+  plane = document.createElement('img');
+  plane.src = require('./images/1x/fighter.png');
 
   arrow = document.createElement('section');
   arrow.classList.add('arrow');
@@ -32,8 +44,9 @@ function draw(context, scale, offsetX, offsetY) {
     let { x, y, x2, y2 } = territories[territory].getBoundingBox();
     x = (x2 - x) / 2 + x;
     y = (y2 - y) / 2 + y;
-    x = (x - offsetX) / scale - SIZE / 2;
-    y = (y - offsetY) / scale - SIZE / 2;
+
+    x = (x - offsetX) / scale;
+    y = (y - offsetY) / scale;
 
     if (scale > 0.5) {
       context.fillStyle = '#b2b5af';
@@ -42,7 +55,9 @@ function draw(context, scale, offsetX, offsetY) {
       context.font = '10px monospace';
       context.fillText('12', x, y + (SIZE / 4));
     } else {
-      context.drawImage(tank, x, y, SIZE, SIZE * 1.5);
+      context.drawImage(tank, x, y, TOKEN_WIDTH, TOKEN_HEIGHT);
+      context.drawImage(troop, x + TOKEN_WIDTH / 2 + TOKEN_PADDING, y, TOKEN_WIDTH, TOKEN_HEIGHT);
+      context.drawImage(plane, x + TOKEN_WIDTH + TOKEN_PADDING * 2, y, TOKEN_WIDTH, TOKEN_HEIGHT);
     }
   });
 
