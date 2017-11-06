@@ -40,16 +40,25 @@ function initialize() {
     Map.zoom(event.pageX, event.pageY, deltaY);
   }, 50));
 
-  document.addEventListener('mousedown', (event) => {
+  const down = event => {
     isPanning = true;
-    const { pageX, pageY } = event;
+    let { pageX, pageY } = event;
+    if (pageX == null) {
+      ({pageX, pageY} = event.touches[0]); 
+    }
     lastX = pageX;
     lastY = pageY;
     canvas.style.cursor = 'move';
-  });
+  };
 
-  document.addEventListener('mousemove', (event) => {
-    const { pageX, pageY } = event;
+  document.addEventListener('mousedown', down);
+  document.addEventListener('touchstart', down);
+      
+  const up = event => {
+    let { pageX, pageY } = event;
+    if (pageX == null) {
+      ({pageX, pageY} = event.touches[0]);
+    }
     const transformedX = pageX * Map.getScale() + Map.getOffsetX();
     const transformedY = pageY * Map.getScale() + Map.getOffsetY();
     positionBox.innerText =
@@ -67,8 +76,10 @@ function initialize() {
     }
 
     Map.pan(deltaX, deltaY);
-  });
+  };
 
+  document.addEventListener('mousemove', up);
+  document.addEventListener('touchmove', up);
   document.addEventListener('mouseout', (event) => {
     isPanning = false;
     lastX = null;
@@ -76,10 +87,13 @@ function initialize() {
     canvas.style.cursor = 'default';
   });
 
-  document.addEventListener('mouseup', (event) => {
+  const end = event => {
     isPanning = false;
     canvas.style.cursor = 'default';
-  });
+  };
+
+  document.addEventListener('mouseup', end);
+  document.addEventListener('touchend', end);
 
   document.addEventListener('click', (event) => {
     Map.handleClick(event);

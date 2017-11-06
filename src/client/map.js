@@ -96,7 +96,7 @@ function getOffsetY() {
 }
 
 function handleClick({pageX, pageY}) {
-  lastClickedPoint = [pageX, pageY];
+  lastClickedPoint = [(pageX - x) / zoomDelta, (pageY - y) / zoomDelta];
 }
 
 function setActive(name) {
