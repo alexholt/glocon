@@ -1,6 +1,6 @@
 const SIZE = 40;
-const TOKEN_WIDTH = 90;
-const TOKEN_HEIGHT = 100;
+const TOKEN_WIDTH = 98;
+const TOKEN_HEIGHT = 109;
 const TOKEN_PADDING = 5;
 
 let territories = {};
@@ -17,13 +17,13 @@ function init(_territories) {
   territoryKeys = Object.keys(territories);
 
 	tank = document.createElement('img');
-  tank.src = require('./images/1x/tank.png');
+  tank.src = require('./images/2x/tank@2x.png');
 
 	troop = document.createElement('img');
-  troop.src = require('./images/1x/troop.png');
+  troop.src = require('./images/3x/troop@3x.png');
 
   plane = document.createElement('img');
-  plane.src = require('./images/1x/fighter.png');
+  plane.src = require('./images/3x/fighter@3x.png');
 
   arrow = document.createElement('section');
   arrow.classList.add('arrow');

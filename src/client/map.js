@@ -31,15 +31,9 @@ function init(canvasWidth, canvasHeight) {
 }
 
 function draw(context) {
-<<<<<<< Updated upstream
   context.clearRect(0, 0, width, height);
   context.fillStyle = 'aqua';
   context.fillRect(0, 0, width, height);
-=======
-	context.clearRect(0, 0, width, height);
-	context.fillStyle = '#f2f2f2';
-	context.fillRect(0, 0, width, height);
->>>>>>> Stashed changes
   context.save();
   context.scale(1 / zoomDelta, 1 / zoomDelta);
   context.translate(-x, -y);
