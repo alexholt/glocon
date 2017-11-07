@@ -64,7 +64,8 @@ function initialize() {
     positionBox.innerText =
       `(${pageX}, ${pageY})
       [${transformedX.toFixed(0)}, ${transformedY.toFixed(0)}]
-      `;
+      Map:
+        (${Map.getOffsetX()}, ${Map.getOffsetY()}) @ ${Map.getScale()}`;
 
     const deltaX = lastX - pageX;
     const deltaY = lastY - pageY;
