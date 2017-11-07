@@ -3,6 +3,7 @@ import { cloneDeep } from 'lodash';
 
 const ZOOM_MIN = 0.025;
 const ZOOM_MAX = 1;
+const PAN_BORDER = 10;
 const territories = {};
 
 let hasInit = false;
@@ -125,10 +126,10 @@ function setActive(name) {
 function handleEdgePan(lastX, lastY) {
   if (!lastX || !lastY) return;
 
-  const lowerX = 0.2 * width;
-  const upperX = width - 0.2 * width;
-  const lowerY = 0.2 * height;
-  const upperY = height - 0.2 * height;
+  const lowerX =  PAN_BORDER;
+  const upperX = width - PAN_BORDER;
+  const lowerY = PAN_BORDER;
+  const upperY = height - PAN_BORDER;
 
   if (lastX < lowerX) pan(-10, 0);
   if (lastX > upperX) pan(10, 0);
