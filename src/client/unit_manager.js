@@ -1,7 +1,7 @@
 const SIZE = 40;
 const TOKEN_WIDTH = 98;
 const TOKEN_HEIGHT = 109;
-const TOKEN_PADDING = 5;
+const TOKEN_PADDING = 20;
 
 let territories = {};
 let tanks = {};
@@ -17,7 +17,7 @@ function init(_territories) {
   territoryKeys = Object.keys(territories);
 
 	tank = document.createElement('img');
-  tank.src = require('./images/2x/tank@2x.png');
+  tank.src = require('./images/3x/tank@3x.png');
 
 	troop = document.createElement('img');
   troop.src = require('./images/3x/troop@3x.png');
@@ -57,7 +57,7 @@ function draw(context, scale, offsetX, offsetY) {
     } else {
       context.drawImage(tank, x, y, TOKEN_WIDTH, TOKEN_HEIGHT);
       context.drawImage(troop, x + TOKEN_WIDTH / 2 + TOKEN_PADDING, y, TOKEN_WIDTH, TOKEN_HEIGHT);
-      context.drawImage(plane, x + TOKEN_WIDTH + TOKEN_PADDING * 2, y, TOKEN_WIDTH, TOKEN_HEIGHT);
+      context.drawImage(plane, x, y + TOKEN_HEIGHT / 2 + TOKEN_PADDING, TOKEN_WIDTH, TOKEN_HEIGHT);
     }
   });
 
