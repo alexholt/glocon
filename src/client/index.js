@@ -3,6 +3,7 @@ import { throttle } from 'lodash';
 import Map from './map';
 import UnitManager from './unit_manager';
 import Stats from 'stats.js';
+import UI from './ui';
 
 let context;
 
@@ -99,6 +100,7 @@ function initialize() {
     Map.handleClick(event);
   });
 
+  UI.initialize();
   window.requestAnimationFrame(render);
 }
 
