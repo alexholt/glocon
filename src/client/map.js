@@ -15,6 +15,7 @@ let imageHeight = 0;
 let zoomDelta = 0.5;
 let lastActive = {};
 let lastClickedPoint;
+let active = '';
 
 function init(canvasWidth, canvasHeight) {
   width = canvasWidth;
@@ -30,33 +31,43 @@ function init(canvasWidth, canvasHeight) {
 }
 
 function draw(context) {
-	context.clearRect(0, 0, width, height);
-	context.fillStyle = 'aqua';
-	context.fillRect(0, 0, width, height);
+  context.clearRect(0, 0, width, height);
+  context.fillStyle = 'aqua';
+  context.fillRect(0, 0, width, height);
   context.save();
   context.scale(1 / zoomDelta, 1 / zoomDelta);
   context.translate(-x, -y);
-	context.lineCap = 'round';
+  context.lineCap = 'round';
 
-	Object.keys(territories).forEach((name) => {
+  Object.keys(territories).forEach((name) => {
+    const territory = territories[name];
+
     context.lineWidth = 1 * zoomDelta;
-	  context.fillStyle = 'forestgreen';
+    context.fillStyle = 'forestgreen';
 
-    if (territories[name].isActive) {
+    if (territory.isActive) {
       context.lineWidth = 5 * zoomDelta;
-	    context.fillStyle = '#227a22';
+      context.fillStyle = '#227a22';
     }
 
-  	context.fill(territories[name].getPathObj());
-    context.stroke(territories[name].getPathObj());
+    context.fill(territory.getPathObj());
+    context.stroke(territory.getPathObj());
+  });
 
-    if (lastClickedPoint && context.isPointInPath(...lastClickedPoint)) {
-      setActive(active);
+  context.resetTransform();
+  Object.keys(territories).forEach((name) => {
+    const territory = territories[name];
+    if (
+        lastClickedPoint &&
+        context.isPointInPath(territory.getPathObj(), lastClickedPoint[0], lastClickedPoint[1]) &&
+        name !== active
+       ) {
+      setActive(name);
     }
-	});
+  });
+
 
   context.restore();
-
   if (!hasInit) {
     return;
   }
@@ -96,7 +107,7 @@ function getOffsetY() {
 }
 
 function handleClick({pageX, pageY}) {
-  lastClickedPoint = [(pageX - x) / zoomDelta, (pageY - y) / zoomDelta];
+  lastClickedPoint = [pageX * zoomDelta + x, pageY * zoomDelta + y];
 }
 
 function setActive(name) {
@@ -108,7 +119,6 @@ function setActive(name) {
 
   lastActive.isActive = false;
   lastActive = territories[active];
-  console.log(active);
   lastActive.isActive = true;
 }
 
