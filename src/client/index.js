@@ -34,7 +34,7 @@ function initialize() {
     let deltaY = event.deltaY;
 
     // FF (57.0b10) uses lines for the mousewheel scroll delta
-    // https://w3c.github.io/uievents/#idl-wheelevent 
+    // https://w3c.github.io/uievents/#idl-wheelevent
     if (event.deltaMode === 1) deltaY *= 20;
 
     Map.zoom(event.pageX, event.pageY, deltaY);
@@ -44,7 +44,7 @@ function initialize() {
     isPanning = true;
     let { pageX, pageY } = event;
     if (pageX == null) {
-      ({pageX, pageY} = event.touches[0]); 
+      ({pageX, pageY} = event.touches[0]);
     }
     lastX = pageX;
     lastY = pageY;
@@ -53,7 +53,7 @@ function initialize() {
 
   document.addEventListener('mousedown', down);
   document.addEventListener('touchstart', down);
-      
+
   const up = event => {
     let { pageX, pageY } = event;
     if (pageX == null) {
