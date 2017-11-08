@@ -67,7 +67,7 @@ function draw(context) {
       context.fillStyle = 'red';
       context.transform = currentTransform;
       context.beginPath();
-      context.arc(centroid.x, centroid.y, CENTROID_RADIUS, 0, Math.PI * 2);
+      context.arc(centroid.x, centroid.y, CENTROID_RADIUS * zoomDelta, 0, Math.PI * 2);
       context.fill();
       context.stroke();
 

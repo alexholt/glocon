@@ -1,6 +1,6 @@
 const SIZE = 40;
-const TOKEN_WIDTH = 98;
-const TOKEN_HEIGHT = 109;
+const TOKEN_WIDTH = 98 / 2;
+const TOKEN_HEIGHT = 109 / 2;
 const TOKEN_PADDING = 20;
 
 let territories = {};
@@ -41,9 +41,7 @@ function attachEventHandlers(el) {
 
 function draw(context, scale, offsetX, offsetY) {
   territoryKeys.forEach((territory) => {
-    let { x, y, x2, y2 } = territories[territory].getBoundingBox();
-    x = (x2 - x) / 2 + x;
-    y = (y2 - y) / 2 + y;
+    let { x, y } = territories[territory].getCentroid();
 
     x = (x - offsetX) / scale;
     y = (y - offsetY) / scale;
@@ -55,9 +53,9 @@ function draw(context, scale, offsetX, offsetY) {
       context.font = '10px monospace';
       context.fillText('12', x, y + (SIZE / 4));
     } else {
-      context.drawImage(tank, x, y, TOKEN_WIDTH, TOKEN_HEIGHT);
-      context.drawImage(troop, x + TOKEN_WIDTH / 2 + TOKEN_PADDING, y, TOKEN_WIDTH, TOKEN_HEIGHT);
-      context.drawImage(plane, x, y + TOKEN_HEIGHT / 2 + TOKEN_PADDING, TOKEN_WIDTH, TOKEN_HEIGHT);
+      context.drawImage(tank, x - TOKEN_WIDTH, y - TOKEN_HEIGHT, TOKEN_WIDTH, TOKEN_HEIGHT);
+      context.drawImage(troop, x - TOKEN_WIDTH / 2 + TOKEN_PADDING, y - TOKEN_HEIGHT, TOKEN_WIDTH, TOKEN_HEIGHT);
+      context.drawImage(plane, x - TOKEN_WIDTH, y - TOKEN_HEIGHT / 2 + TOKEN_PADDING, TOKEN_WIDTH, TOKEN_HEIGHT);
     }
   });
 
