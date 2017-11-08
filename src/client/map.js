@@ -2,11 +2,11 @@ import Territory from './territory';
 import { cloneDeep } from 'lodash';
 
 const ZOOM_MIN = 0.025;
-const ZOOM_MAX = 1;
+const ZOOM_MAX = 10;
 const PAN_BORDER = 10;
+const CENTROID_RADIUS = 10;
 const territories = {};
 
-let hasInit = false;
 let x = 0;
 let y = 0;
 let width = 0;
@@ -53,25 +53,34 @@ function draw(context) {
 
     context.fill(territory.getPathObj());
     context.stroke(territory.getPathObj());
-  });
 
-  context.resetTransform();
-  Object.keys(territories).forEach((name) => {
-    const territory = territories[name];
+    context.save();
+    const currentTransform = context.currentTransform;
+    context.resetTransform();
     if (
-        lastClickedPoint &&
-        context.isPointInPath(territory.getPathObj(), lastClickedPoint[0], lastClickedPoint[1]) &&
-        name !== active
-       ) {
-      setActive(name);
+      lastClickedPoint &&
+      context.isPointInPath(territory.getPathObj(), lastClickedPoint[0], lastClickedPoint[1])
+    ) {
+      context.restore();
+      const centroid = territory.getCentroid();
+
+      context.fillStyle = 'red';
+      context.transform = currentTransform;
+      context.beginPath();
+      context.arc(centroid.x, centroid.y, CENTROID_RADIUS, 0, Math.PI * 2);
+      context.fill();
+      context.stroke();
+
+      if (name !== active) {
+        setActive(name);
+      }
+
+    } else {
+      context.restore();
     }
   });
 
-
   context.restore();
-  if (!hasInit) {
-    return;
-  }
 }
 
 function pan(deltaX, deltaY) {

@@ -70,15 +70,10 @@ export default class Territory {
     }
   }
 
-  getBoundingBox() {
-    if (this.boundingBox) {
-      return this.boundingBox;
-    }
-    let token = '';
-    this.lastPoint = { x: 0, y: 0 };
-    this.pathState = 'BEGIN';
-    this.currentVal = NaN;
+  getPointArray() {
     this.pointArray = [];
+    let token = '';
+
     for (let i = 0; i < this.path.length; i++) {
       let chr = this.path[i];
       if (chr === ' ' || chr === ',') {
@@ -88,6 +83,18 @@ export default class Territory {
         token += chr;  
       }
     }
+
+    return this.pointArray;
+  }
+
+  getBoundingBox() {
+    if (this.boundingBox) {
+      return this.boundingBox;
+    }
+    this.lastPoint = { x: 0, y: 0 };
+    this.pathState = 'BEGIN';
+    this.currentVal = NaN;
+    this.getPointArray();
 
     return this.boundingBox = this.pointArray.reduce((acc, cur) => {
       if (acc.getX() > cur.x) {
@@ -109,4 +116,48 @@ export default class Territory {
       return acc;
     }, new Rect(Infinity, Infinity, -Infinity, -Infinity));
   }
+
+  // Formula is from https://en.wikipedia.org/wiki/Centroid, duh
+  // @return {Point}
+  getCentroid() {
+
+    const nextTwo = (vertices, i) => ({
+        xi: vertices[i].x,
+        yi: vertices[i].y,
+        xi1: vertices[(i + 1) % vertices.length].x,
+        yi1: vertices[(i + 1) % vertices.length].y,
+    });
+
+    if (this.centroid) return this.centroid;
+
+    const vertices = this.getPointArray();
+
+    // a = 1/2 * sum( xi * yi1 - xi1 * yi )
+    let a = 0;
+    for (let i = 0; i < vertices.length; i++) {
+      let {xi, yi, xi1, yi1} = nextTwo(vertices, i);
+      a += xi * yi1 - xi1 * yi;
+    }
+
+    a /= 2;
+
+    // cx = 1/6a * sum( (xi + xi1) * (xi * yi1 - xi1 * yi) )
+    let cx = 0;
+    for (let i = 0; i < vertices.length; i++) {
+      let {xi, yi, xi1, yi1} = nextTwo(vertices, i);
+      cx += (xi + xi1) * (xi * yi1 - xi1 * yi);
+    }
+    cx *= 1 / (6 * a);
+
+    // cy = 1/6a * sum( (yi + yi1) * (xi * yi1 - xi1 * yi) )
+    let cy = 0;
+    for (let i = 0; i < vertices.length; i++) {
+      let {xi, yi, xi1, yi1} = nextTwo(vertices, i);
+      cy += (yi + yi1) * (xi * yi1 - xi1 * yi);
+    }
+    cy *= 1 / (6 * a);
+
+    return {x: cx, y: cy};
+  }
+
 }
