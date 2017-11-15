@@ -7,8 +7,8 @@ const PAN_BORDER = 10;
 const CENTROID_RADIUS = 10;
 const territories = {};
 
-let x = 0;
-let y = 0;
+let x = 200;
+let y = 100;
 let width = 0;
 let height = 0;
 let imageWidth = 0;
@@ -17,45 +17,68 @@ let zoomDelta = 0.5;
 let lastActive = {};
 let lastClickedPoint;
 let active = '';
+let canvasTexture;
+let texture;
+let pattern;
+let isInit = false;
 
 function init(canvasWidth, canvasHeight) {
   width = canvasWidth;
   height = canvasHeight;
 	const svgContainer = document.createElement('section');
   svgContainer.innerHTML = require('./images/world.svg');
+
 	const paths = svgContainer.querySelectorAll('path');
-	for (let i = 0; i < paths.length; i++) {
-		const territory = paths[i];
+  texture = new Image();
+
+  texture.addEventListener('load', () => {
+    isInit = true;
+  });
+
+  texture.src = require('./images/2x/terrain@2x.png');
+
+  for (let i = 0; i < paths.length; i++) {
+    const territory = paths[i];
     const pathData = territory.getAttribute('d');
-		territories[territory.getAttribute('data-name')] = new Territory(pathData);
-	}
+    territories[territory.getAttribute('data-name')] = new Territory(pathData);
+  }
 }
 
 function draw(context) {
-  context.clearRect(0, 0, width, height);
+  if (!isInit) return;
+
   context.fillStyle = 'aqua';
   context.fillRect(0, 0, width, height);
+
   context.save();
   context.scale(1 / zoomDelta, 1 / zoomDelta);
   context.translate(-x, -y);
   context.lineCap = 'round';
 
+  let currentTransform;
   Object.keys(territories).forEach((name) => {
     const territory = territories[name];
 
-    context.lineWidth = 1 * zoomDelta;
-    context.fillStyle = 'forestgreen';
+    context.lineWidth = zoomDelta;
+
+    if (!pattern) {
+      pattern = context.createPattern(texture, 'repeat');
+      const matrix = document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGMatrix();
+      pattern.setTransform(matrix.scale(ZOOM_MIN));
+    }
+
+    context.fillStyle = pattern;
+    context.fill(territory.getPathObj());
 
     if (territory.isActive) {
       context.lineWidth = 5 * zoomDelta;
       context.fillStyle = '#227a22';
     }
 
-    context.fill(territory.getPathObj());
     context.stroke(territory.getPathObj());
 
     context.save();
-    const currentTransform = context.currentTransform;
+    currentTransform = context.currentTransform;
     context.resetTransform();
     if (
       lastClickedPoint &&

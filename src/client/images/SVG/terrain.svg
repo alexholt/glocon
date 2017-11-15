@@ -1,0 +1,451 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient-4);
+      }
+
+      .cls-5 {
+        fill: url(#linear-gradient-5);
+      }
+
+      .cls-6 {
+        fill: url(#linear-gradient-6);
+      }
+
+      .cls-7 {
+        fill: url(#linear-gradient-7);
+      }
+
+      .cls-8 {
+        fill: url(#linear-gradient-8);
+      }
+
+      .cls-9 {
+        fill: url(#linear-gradient-9);
+      }
+
+      .cls-10 {
+        fill: url(#linear-gradient-10);
+      }
+
+      .cls-11 {
+        fill: url(#linear-gradient-11);
+      }
+
+      .cls-12 {
+        fill: url(#linear-gradient-12);
+      }
+
+      .cls-13 {
+        fill: url(#linear-gradient-13);
+      }
+
+      .cls-14 {
+        fill: url(#linear-gradient-14);
+      }
+
+      .cls-15 {
+        fill: url(#linear-gradient-15);
+      }
+
+      .cls-16 {
+        fill: url(#linear-gradient-16);
+      }
+
+      .cls-17 {
+        fill: url(#linear-gradient-17);
+      }
+
+      .cls-18 {
+        fill: url(#linear-gradient-18);
+      }
+
+      .cls-19 {
+        fill: url(#linear-gradient-19);
+      }
+
+      .cls-20 {
+        fill: url(#linear-gradient-20);
+      }
+
+      .cls-21 {
+        fill: url(#linear-gradient-21);
+      }
+
+      .cls-22 {
+        fill: url(#linear-gradient-22);
+      }
+
+      .cls-23 {
+        fill: url(#linear-gradient-23);
+      }
+
+      .cls-24 {
+        fill: url(#linear-gradient-24);
+      }
+
+      .cls-25 {
+        fill: url(#linear-gradient-25);
+      }
+
+      .cls-26 {
+        fill: url(#linear-gradient-26);
+      }
+
+      .cls-27 {
+        fill: url(#linear-gradient-27);
+      }
+
+      .cls-28 {
+        fill: url(#linear-gradient-28);
+      }
+
+      .cls-29 {
+        fill: url(#linear-gradient-29);
+      }
+
+      .cls-30 {
+        fill: url(#linear-gradient-30);
+      }
+
+      .cls-31 {
+        fill: url(#linear-gradient-31);
+      }
+
+      .cls-32 {
+        fill: url(#linear-gradient-32);
+      }
+
+      .cls-33 {
+        fill: url(#linear-gradient-33);
+      }
+
+      .cls-34 {
+        fill: url(#linear-gradient-34);
+      }
+
+      .cls-35 {
+        fill: url(#linear-gradient-36);
+      }
+
+      .cls-36 {
+        fill: url(#linear-gradient-37);
+      }
+
+      .cls-37 {
+        fill: url(#linear-gradient-38);
+      }
+
+      .cls-38 {
+        fill: url(#linear-gradient-39);
+      }
+
+      .cls-39 {
+        fill: url(#linear-gradient-40);
+      }
+
+      .cls-40 {
+        fill: url(#linear-gradient-41);
+      }
+
+      .cls-41 {
+        fill: url(#linear-gradient-42);
+      }
+
+      .cls-42 {
+        fill: url(#linear-gradient-43);
+      }
+
+      .cls-43 {
+        fill: url(#linear-gradient-44);
+      }
+
+      .cls-44 {
+        fill: url(#linear-gradient-45);
+      }
+
+      .cls-45 {
+        fill: url(#linear-gradient-46);
+      }
+
+      .cls-46 {
+        fill: url(#linear-gradient-47);
+      }
+
+      .cls-47 {
+        fill: url(#linear-gradient-48);
+      }
+
+      .cls-48 {
+        fill: url(#linear-gradient-49);
+      }
+
+      .cls-49 {
+        fill: url(#linear-gradient-50);
+      }
+
+      .cls-50 {
+        fill: url(#linear-gradient-51);
+      }
+
+      .cls-51 {
+        fill: url(#linear-gradient-52);
+      }
+
+      .cls-52 {
+        fill: url(#linear-gradient-54);
+      }
+
+      .cls-53 {
+        fill: url(#linear-gradient-56);
+      }
+
+      .cls-54 {
+        fill: url(#linear-gradient-57);
+      }
+
+      .cls-55 {
+        fill: url(#linear-gradient-58);
+      }
+
+      .cls-56 {
+        fill: url(#linear-gradient-59);
+      }
+
+      .cls-57 {
+        fill: url(#linear-gradient-60);
+      }
+
+      .cls-58 {
+        fill: url(#linear-gradient-61);
+      }
+
+      .cls-59 {
+        fill: url(#linear-gradient-62);
+      }
+
+      .cls-60 {
+        fill: url(#linear-gradient-63);
+      }
+
+      .cls-61 {
+        fill: url(#linear-gradient-64);
+      }
+
+      .cls-62 {
+        fill: url(#linear-gradient-65);
+      }
+
+      .cls-63 {
+        fill: url(#linear-gradient-66);
+      }
+
+      .cls-64 {
+        fill: url(#linear-gradient-68);
+      }
+
+      .cls-65 {
+        fill: url(#linear-gradient-69);
+      }
+
+      .cls-66 {
+        fill: url(#linear-gradient-70);
+      }
+
+      .cls-67 {
+        fill: url(#linear-gradient-71);
+      }
+
+      .cls-68 {
+        fill: url(#linear-gradient-72);
+      }
+
+      .cls-69 {
+        fill: url(#linear-gradient-73);
+      }
+
+      .cls-70 {
+        fill: url(#linear-gradient-74);
+      }
+
+      .cls-71 {
+        fill: url(#linear-gradient-75);
+      }
+
+      .cls-72 {
+        fill: url(#linear-gradient-76);
+      }
+
+      .cls-73 {
+        fill: url(#linear-gradient-77);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="23.63" y1="42.44" x2="55" y2="42.44" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a2d480"/>
+      <stop offset="1" stop-color="#42a854"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="55" y1="29.13" x2="79.5" y2="29.13" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="55" y1="35.13" x2="82.5" y2="35.13" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-4" x1="25.75" y1="49.5" x2="82.5" y2="49.5" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-5" x1="79.5" y1="35.13" x2="98.75" y2="35.13" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-6" x1="82.5" y1="42.5" x2="103.75" y2="42.5" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-7" x1="79.5" y1="24.75" x2="98.75" y2="24.75" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-8" x1="25.75" y1="58.13" x2="82.5" y2="58.13" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-9" x1="73.75" y1="56.75" x2="103.75" y2="56.75" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-10" x1="25.75" y1="70.25" x2="73.75" y2="70.25" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-11" x1="61.25" y1="72.88" x2="81.75" y2="72.88" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-12" x1="73.75" y1="61.5" x2="103.75" y2="61.5" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-13" x1="98.75" y1="24.75" x2="114.5" y2="24.75" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-14" x1="98.75" y1="41.13" x2="113.5" y2="41.13" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-15" x1="98.75" y1="26.88" x2="114.5" y2="26.88" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-16" x1="81.75" y1="61.5" x2="105.25" y2="61.5" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-17" x1="103.75" y1="56.75" x2="121.75" y2="56.75" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-18" x1="103.75" y1="43.25" x2="121.75" y2="43.25" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-19" x1="113.5" y1="34.79" x2="128" y2="34.79" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-20" x1="113.5" y1="40.5" x2="128" y2="40.5" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-21" x1="105.25" y1="56.75" x2="121.75" y2="56.75" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-22" x1="121.75" y1="45.25" x2="128" y2="45.25" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-23" x1="121.75" y1="47.4" x2="128" y2="47.4" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-24" x1="113.5" y1="26.88" x2="128" y2="26.88" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-25" x1="114.5" y1="18.07" x2="128" y2="18.07" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-26" x1="98.75" y1="12.25" x2="128" y2="12.25" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-27" x1="98.75" y1="8.38" x2="128" y2="8.38" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-28" x1="110.5" y1="3.88" x2="128" y2="3.88" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-29" x1="86.19" y1="8.38" x2="110.5" y2="8.38" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-30" x1="79.5" y1="9" x2="98.75" y2="9" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-31" x1="23.63" y1="31.25" x2="58" y2="31.25" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-32" x1="23.63" y1="13.06" x2="58" y2="13.06" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-33" x1="51.37" y1="11.13" x2="68.75" y2="11.13" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-34" x1="58" y1="11.13" x2="86.25" y2="11.13" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-36" x1="13.46" y1="13.06" x2="51.37" y2="13.06" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-37" x1="0" y1="13.06" x2="23.63" y2="13.06" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-38" x1="0" y1="5.56" x2="13.46" y2="5.56" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-39" x1="0" y1="21.19" x2="23.63" y2="21.19" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-40" x1="0" y1="42.44" x2="25.75" y2="42.44" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-41" x1="0" y1="48.26" x2="25.75" y2="48.26" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-42" x1="0" y1="68.99" x2="25.75" y2="68.99" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-43" x1="23.63" y1="70.25" x2="61.25" y2="70.25" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-44" x1="0" y1="74.64" x2="23.63" y2="74.64" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-45" x1="0" y1="88.94" x2="39.31" y2="88.94" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-46" x1="23.63" y1="88.94" x2="61.25" y2="88.94" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-47" x1="39.31" y1="90.21" x2="65.17" y2="90.21" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-48" x1="61.25" y1="82.44" x2="81.75" y2="82.44" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-49" x1="65.17" y1="80.44" x2="105.25" y2="80.44" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-50" x1="65.17" y1="86.93" x2="109.16" y2="86.93" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-51" x1="105.25" y1="83.93" x2="121.75" y2="83.93" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-52" x1="121.75" y1="56.5" x2="128" y2="56.5" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-54" x1="109.16" y1="83.93" x2="128" y2="83.93" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-56" x1="109.16" y1="98.46" x2="128" y2="98.46" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-57" x1="109.16" y1="116.18" x2="128" y2="116.18" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-58" x1="110.58" y1="117.78" x2="128" y2="117.78" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-59" x1="65.17" y1="101.41" x2="109.16" y2="101.41" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-60" x1="74.84" y1="116.18" x2="109.16" y2="116.18" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-61" x1="86.04" y1="116.18" x2="110.58" y2="116.18" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-62" x1="68.71" y1="119.72" x2="86.04" y2="119.72" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-63" x1="65.17" y1="105.15" x2="74.84" y2="105.15" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-64" x1="39.31" y1="99.91" x2="65.17" y2="99.91" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-65" x1="13.46" y1="113.33" x2="39.31" y2="113.33" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-66" x1="0" y1="106" x2="39.31" y2="106" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-68" x1="0" y1="122.98" x2="13.46" y2="122.98" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-69" x1="32.26" y1="121.39" x2="51.37" y2="121.39" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-70" x1="32.26" y1="113.33" x2="51.37" y2="113.33" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-71" x1="51.37" y1="121.39" x2="61.25" y2="121.39" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-72" x1="39.31" y1="106.73" x2="51.37" y2="106.73" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-73" x1="51.37" y1="109.18" x2="63.35" y2="109.18" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-74" x1="68.71" y1="119.72" x2="74.84" y2="119.72" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-75" x1="61.25" y1="118.21" x2="68.71" y2="118.21" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-76" x1="51.37" y1="118.21" x2="63.35" y2="118.21" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-77" x1="63.35" y1="105.15" x2="68.71" y2="105.15" xlink:href="#linear-gradient"/>
+  </defs>
+  <title>terrain</title>
+  <polygon class="cls-1" points="23.63 26.13 55 40.25 25.75 58.75 23.63 26.13"/>
+  <polygon class="cls-2" points="55 40.25 79.5 18 58 22.25 55 40.25"/>
+  <polygon class="cls-3" points="55 40.25 82.5 52.25 79.5 18 55 40.25"/>
+  <polygon class="cls-4" points="25.75 58.75 55 40.25 82.5 52.25 25.75 58.75"/>
+  <polygon class="cls-5" points="82.5 52.25 79.5 18 98.75 32.75 82.5 52.25"/>
+  <polygon class="cls-6" points="82.5 52.25 103.75 49.5 98.75 32.75 82.5 52.25"/>
+  <polygon class="cls-7" points="79.5 18 98.75 16.75 98.75 32.75 79.5 18"/>
+  <polygon class="cls-8" points="82.5 52.25 73.75 64 25.75 58.75 82.5 52.25"/>
+  <polygon class="cls-9" points="73.75 64 103.75 49.5 82.5 52.25 73.75 64"/>
+  <polygon class="cls-10" points="73.75 64 61.25 81.75 25.75 58.75 73.75 64"/>
+  <polygon class="cls-11" points="61.25 81.75 81.75 73.5 73.75 64 61.25 81.75"/>
+  <polygon class="cls-12" points="81.75 73.5 103.75 49.5 73.75 64 81.75 73.5"/>
+  <polygon class="cls-13" points="98.75 32.75 114.5 16.75 98.75 16.75 98.75 32.75"/>
+  <polygon class="cls-14" points="98.75 32.75 113.5 37 103.75 49.5 98.75 32.75"/>
+  <polygon class="cls-15" points="98.75 32.75 114.5 16.75 113.5 37 98.75 32.75"/>
+  <polygon class="cls-16" points="81.75 73.5 105.25 69.5 103.75 49.5 81.75 73.5"/>
+  <polygon class="cls-17" points="105.25 69.5 121.75 44 103.75 49.5 105.25 69.5"/>
+  <polygon class="cls-18" points="103.75 49.5 113.5 37 121.75 44 103.75 49.5"/>
+  <polygon class="cls-19" points="113.5 37 128 28.46 128 41.13 113.5 37"/>
+  <polygon class="cls-20" points="113.5 37 128 41 121.75 44 113.5 37"/>
+  <polygon class="cls-21" points="105.25 69.5 121.75 63.5 121.75 44 105.25 69.5"/>
+  <polygon class="cls-22" points="121.75 44 128 41 128 49.5 121.75 44"/>
+  <polygon class="cls-23" points="121.75 44 121.75 50.8 128 49.5 121.75 44"/>
+  <polygon class="cls-24" points="114.5 16.75 113.5 37 128 28.5 114.5 16.75"/>
+  <polygon class="cls-25" points="114.5 16.75 128 7.64 128 28.5 114.5 16.75"/>
+  <polygon class="cls-26" points="98.75 16.75 128 7.75 114.5 16.75 98.75 16.75"/>
+  <polygon class="cls-27" points="98.75 16.75 110.43 0 128 7.75 98.75 16.75"/>
+  <polygon class="cls-28" points="110.5 0 128 0 128 7.75 110.5 0"/>
+  <polygon class="cls-29" points="98.75 16.75 86.19 0 110.5 0 98.75 16.75"/>
+  <polygon class="cls-30" points="79.5 18 86.25 0 98.75 16.75 79.5 18"/>
+  <polygon class="cls-31" points="23.63 26.13 58 22.25 55 40.25 23.63 26.13"/>
+  <polygon class="cls-32" points="23.63 26.13 51.37 0 58 22.25 23.63 26.13"/>
+  <polygon class="cls-33" points="51.37 0 68.75 0 58 22.25 51.37 0"/>
+  <polygon class="cls-34" points="58 22.25 68.75 0 86.25 0 58 22.25"/>
+  <polygon class="cls-34" points="58 22.25 86.25 0 79.5 18 58 22.25"/>
+  <polygon class="cls-35" points="23.63 26.13 13.46 0 51.37 0 23.63 26.13"/>
+  <polygon class="cls-36" points="23.63 26.13 0 11.13 13.46 0 23.63 26.13"/>
+  <polygon class="cls-37" points="0 11.13 0 0 13.46 0 0 11.13"/>
+  <polygon class="cls-38" points="23.63 26.13 0 31.25 0 11.13 23.63 26.13"/>
+  <polygon class="cls-39" points="23.63 26.13 0 31.25 25.75 58.75 23.63 26.13"/>
+  <polygon class="cls-40" points="25.75 58.75 0 31.25 0 65.28 25.75 58.75"/>
+  <polygon class="cls-41" points="0 65.28 23.63 79.22 25.75 58.75 0 65.28"/>
+  <polygon class="cls-42" points="23.63 79.22 25.75 58.75 61.25 81.75 23.63 79.22"/>
+  <polygon class="cls-43" points="0 65.28 0 84.01 23.63 79.22 0 65.28"/>
+  <polygon class="cls-44" points="0 84.01 39.31 98.67 23.63 79.22 0 84.01"/>
+  <polygon class="cls-45" points="39.31 98.67 61.25 81.75 23.63 79.22 39.31 98.67"/>
+  <polygon class="cls-46" points="39.31 98.67 65.17 91.39 61.25 81.75 39.31 98.67"/>
+  <polygon class="cls-47" points="65.17 91.39 81.75 73.5 61.25 81.75 65.17 91.39"/>
+  <polygon class="cls-48" points="81.75 73.5 65.17 91.39 105.25 69.5 81.75 73.5"/>
+  <polygon class="cls-49" points="65.17 91.39 109.16 104.36 105.25 69.5 65.17 91.39"/>
+  <polygon class="cls-50" points="109.16 104.36 121.75 63.5 105.25 69.5 109.16 104.36"/>
+  <polygon class="cls-51" points="121.75 63.5 128 49.5 121.75 50.8 121.75 63.5"/>
+  <polygon class="cls-51" points="121.75 63.5 128 63.5 128 49.5 121.75 63.5"/>
+  <polygon class="cls-52" points="109.16 104.36 128 89.35 128 63.5 109.16 104.36"/>
+  <polygon class="cls-52" points="109.16 104.36 121.75 63.5 128 63.5 109.16 104.36"/>
+  <polygon class="cls-53" points="109.16 104.36 128 107.56 128 89.35 109.16 104.36"/>
+  <polygon class="cls-54" points="109.16 104.36 110.58 128 128 107.56 109.16 104.36"/>
+  <polygon class="cls-55" points="110.58 128 128 107.56 128 128 110.58 128"/>
+  <polygon class="cls-56" points="109.16 104.36 65.17 91.39 74.84 111.44 109.16 104.36"/>
+  <polygon class="cls-57" points="74.84 111.44 86.05 128 109.16 104.36 74.84 111.44"/>
+  <polygon class="cls-58" points="86.05 128 109.16 104.36 110.58 128 86.05 128"/>
+  <polygon class="cls-59" points="86.05 128 68.71 128 74.84 111.44 86.05 128"/>
+  <polygon class="cls-60" points="68.71 118.91 65.17 91.39 74.84 111.44 68.71 118.91"/>
+  <polygon class="cls-61" points="63.34 108.43 39.31 98.67 65.17 91.39 63.34 108.43"/>
+  <polygon class="cls-62" points="13.46 128 39.31 98.67 32.27 128 13.46 128"/>
+  <polygon class="cls-63" points="0 128 0 84.01 39.31 98.67 0 128"/>
+  <polygon class="cls-62" points="13.46 117.95 39.31 98.67 13.46 128 13.46 117.95"/>
+  <polygon class="cls-64" points="0 128 13.46 117.95 13.46 128 0 128"/>
+  <polygon class="cls-65" points="51.37 114.79 32.27 128 51.37 128 51.37 114.79"/>
+  <polygon class="cls-66" points="39.31 98.67 32.27 128 51.37 114.79 39.31 98.67"/>
+  <polygon class="cls-67" points="51.37 114.79 51.37 128 61.25 128 51.37 114.79"/>
+  <polygon class="cls-68" points="39.31 98.67 51.37 114.79 51.37 103.56 39.31 98.67"/>
+  <polygon class="cls-69" points="63.34 108.43 51.37 114.79 51.37 103.56 63.34 108.43"/>
+  <polygon class="cls-70" points="68.71 128 68.71 118.91 74.84 111.44 68.71 128"/>
+  <polygon class="cls-71" points="61.25 128 63.34 108.43 68.71 118.91 68.71 128 61.25 128"/>
+  <polygon class="cls-72" points="51.37 114.79 63.34 108.43 61.25 128 51.37 114.79"/>
+  <polygon class="cls-73" points="65.17 91.39 63.34 108.43 68.71 118.91 65.17 91.39"/>
+</svg>

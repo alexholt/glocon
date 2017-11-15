@@ -1,0 +1,21 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #002664;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #bb133e;
+      }
+    </style>
+  </defs>
+  <title>usa</title>
+  <rect class="cls-1" width="128" height="128"/>
+  <polygon class="cls-2" points="63.98 0.29 83.75 42.25 127.95 48.98 95.97 81.64 103.52 127.75 63.98 105.98 24.44 127.75 31.99 81.64 0 48.98 44.21 42.25 63.98 0.29"/>
+  <ellipse class="cls-3" cx="64" cy="70.71" rx="22.82" ry="22.83"/>
+</svg>
