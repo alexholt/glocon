@@ -50,3 +50,14 @@ function createShader(gl, type, source) {
 
   return shader;
 }
+
+export function makeRectAt(x, y, width, height) {
+  return [
+    x, y,
+    x + width, y,
+    x, y + height,
+    x, y + height,
+    x + width, y + height,
+    x + width, y,
+  ];
+}

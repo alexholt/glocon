@@ -7,13 +7,13 @@ const PAN_BORDER = 10;
 const CENTROID_RADIUS = 10;
 const territories = {};
 
-let x = 200;
-let y = 100;
+let x = -200;
+let y = -100;
 let width = 0;
 let height = 0;
 let imageWidth = 0;
 let imageHeight = 0;
-let zoomDelta = 0.5;
+let zoomDelta = 1;
 let lastActive = {};
 let lastClickedPoint;
 let active = '';
