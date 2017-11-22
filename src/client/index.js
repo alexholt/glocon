@@ -1,11 +1,11 @@
-import { scaleCanvas } from './canvas_tools';
+import { scaleCanvas, createProgram } from './canvas_tools';
 import { throttle } from 'lodash';
 import Map from './map';
 import UnitManager from './unit_manager';
 import Stats from 'stats.js';
 import UI from './ui';
 
-let context;
+let gl;
 
 let isPanning = false;
 let lastX;
@@ -13,15 +13,18 @@ let lastY;
 let lastFrame;
 let stats;
 let positionBox;
+let program;
+let positionAttributeLocation;
+let positionBuffer;
 
 function initialize() {
   initializeFPS();
   const canvas = document.querySelector('canvas');
 
-  context = canvas.getContext('2d');
+  gl = canvas.getContext('webgl');
   Map.init(window.innerWidth, window.innerHeight);
-  UnitManager.init(Map.getTerritories());
-  scaleCanvas(canvas, window.innerWidth, window.innerHeight);
+  //UnitManager.init(Map.getTerritories());
+  scaleCanvas(gl, window.innerWidth, window.innerHeight);
 
   window.addEventListener('resize', () => {
     scaleCanvas(canvas, window.innerWidth, window.innerHeight);
@@ -101,7 +104,8 @@ function initialize() {
     Map.handleClick(event);
   });
 
-  UI.initialize();
+  //UI.initialize();
+  initializeGL(gl);
   window.requestAnimationFrame(render);
 }
 
@@ -118,10 +122,34 @@ function initializeFPS() {
   document.body.appendChild(stats.dom);
 }
 
+function initializeGL(gl) {
+  program  = createProgram(gl, require('./shaders/basic.vert'), require('./shaders/basic.frag'));
+  positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
+  positionBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  var positions = [
+    0, 0,
+    0, 0.5,
+    0.7, 0,
+  ];
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+}
+
 function render(timestamp) {
-  Map.handleEdgePan(lastX, lastY);
-  Map.draw(context);
-  UnitManager.draw(context, Map.getScale(), Map.getOffsetX(), Map.getOffsetY());
+  //Map.handleEdgePan(lastX, lastY);
+  //Map.draw(context);
+  //UnitManager.draw(context, Map.getScale(), Map.getOffsetX(), Map.getOffsetY());
+
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  gl.clearColor(1, 0, 0.8, 1);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.useProgram(program);
+  gl.enableVertexAttribArray(positionAttributeLocation);
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+
   stats.update();
   window.requestAnimationFrame(render);
 }

@@ -40,6 +40,9 @@ const config = {
     }, {
       test: /\.html$/,
       loader: 'html-loader'
+    }, {
+      test: /\.(frag|vert)$/,
+      loader: 'raw-loader'
     }],
   },
   resolve: {
