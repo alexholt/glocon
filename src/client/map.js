@@ -116,11 +116,9 @@ function zoom(zoomX, zoomY, delta) {
   zoomDelta += delta * 0.00025;
   zoomDelta = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoomDelta));
   const scaleChange = zoomDelta - oldDelta;
-	if (scaleChange === 0) {
-		return;
-	}
-  x -= zoomX * scaleChange;
-  y -= zoomY * scaleChange;
+
+  x -= (zoomX - width / 2) * scaleChange;
+  y -= (zoomY - height / 2) * scaleChange;
 }
 
 function getTerritories() {
