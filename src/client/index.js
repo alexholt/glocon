@@ -19,9 +19,11 @@ let positionBuffer;
 let resolutionUniformLocation;
 let positionUniformLocation;
 let positions;
+let texcoords;
 let textureLocation;
 let texcoordAttributeLocation;
 let texcoordBuffer;
+let mapTexInfo;
 
 function initialize() {
   initializeFPS();
@@ -130,6 +132,7 @@ function initializeFPS() {
 
 function initializeGL(gl) {
   program  = createProgram(gl, require('./shaders/basic.vert'), require('./shaders/basic.frag'));
+  mapTexInfo = loadImage();
 
   positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
   texcoordAttributeLocation = gl.getAttribLocation(program, 'a_texcoord');
@@ -141,9 +144,21 @@ function initializeGL(gl) {
   positionBuffer = gl.createBuffer();
   texcoordBuffer = gl.createBuffer();
 
+  positions = new Float32Array(makeRectAt(0, 0, 500, 282));
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
 
+  texcoords = [
+    0, 0,
+    0, 1,
+    1, 0,
+    1, 0,
+    0, 1,
+    1, 1,
+  ];
 
+  gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texcoords), gl.STATIC_DRAW);
 }
 
 function render(timestamp) {
@@ -159,33 +174,63 @@ function render(timestamp) {
 
   gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
   gl.uniform3f(positionUniformLocation, -Map.getOffsetX(), -Map.getOffsetY(), Map.getScale());
+  gl.uniform1i(textureLocation, 0);
 
-  gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  
   gl.enableVertexAttribArray(positionAttributeLocation);
-
-  positions = new Float32Array(makeRectAt(10, 10, 100, 100));
-  gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
-  var texcoords = [
-    0, 0,
-    0, 1,
-    1, 0,
-    1, 0,
-    0, 1,
-    1, 1,
-  ];
+  gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+  
   gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
-  gl.drawArrays(gl.TRIANGLES, 0, 6);
-
-  positions = new Float32Array(makeRectAt(120, 120, 150, 100));
-  gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+  
+  gl.enableVertexAttribArray(texcoordAttributeLocation);
+  gl.vertexAttribPointer(texcoordAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+  
   gl.drawArrays(gl.TRIANGLES, 0, 6);
 
   stats.update();
   window.requestAnimationFrame(render);
 }
 
-function drawImage() {
+function loadImage() {
+  const tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    1,
+    1,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    new Uint8Array([0, 0, 255, 255])
+  );
 
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+  const textureInfo = {
+    width: 1,   // we don't know the size until it loads
+    height: 1,
+    texture: tex,
+  };
+
+  const img = new Image();
+  img.crossOrigin = '';
+
+  img.addEventListener('load', function() {
+    textureInfo.width = img.width;
+    textureInfo.height = img.height;
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, textureInfo.texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+  });
+
+  img.src = require('./images/santa_world.gif');
+  return textureInfo;
 }
 
 window.addEventListener('DOMContentLoaded', initialize);
