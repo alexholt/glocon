@@ -1,5 +1,5 @@
 import Territory from './territory';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, padStart } from 'lodash';
 
 const ZOOM_MIN = 0.025;
 const ZOOM_MAX = 10;
@@ -7,8 +7,8 @@ const PAN_BORDER = 10;
 const CENTROID_RADIUS = 10;
 const territories = {};
 
-let x = -200;
-let y = -100;
+let x = 0;
+let y = 0;
 let width = 0;
 let height = 0;
 let imageWidth = 0;
@@ -17,15 +17,15 @@ let zoomDelta = 1;
 let lastActive = {};
 let lastClickedPoint;
 let active = '';
-let canvasTexture;
 let texture;
 let pattern;
+let svgContainer;
 let isInit = false;
 
 function init(canvasWidth, canvasHeight) {
   width = canvasWidth;
   height = canvasHeight;
-	const svgContainer = document.createElement('section');
+	svgContainer = document.createElement('section');
   svgContainer.innerHTML = require('./images/world.svg');
 
 	const paths = svgContainer.querySelectorAll('path');
@@ -42,6 +42,34 @@ function init(canvasWidth, canvasHeight) {
     const pathData = territory.getAttribute('d');
     territories[territory.getAttribute('data-name')] = new Territory(pathData);
   }
+}
+
+function drawCanvasTexture(cb) {
+  const map = svgContainer.cloneNode(true);
+  const paths = map.querySelectorAll('path');
+
+  for (let i = 0; i < paths.length; i++) {
+    const path = paths[i];
+    let encodedColor = `${i}`;
+    encodedColor = `#${padStart(encodedColor, 6, '0')}`;
+
+    path.setAttribute('fill', `${encodedColor}`);
+    path.removeAttribute('inkscape:connector-curvature');
+    path.removeAttribute('data-name');
+    path.removeAttribute('data-id');
+  }
+
+  const context = document.createElement('canvas').getContext('2d');
+  const img = new Image();
+  const svg = map.querySelector('svg');
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  svg.setAttribute('width', '16000');
+  svg.setAttribute('height', '8000');
+  img.crossOrigin = '';
+  img.addEventListener('load', cb);
+  img.src = `data:image/svg+xml,${encodeURI(map.innerHTML).replace(/#/g, '%23')}`;
+  //context.drawImage(img, 0, 0);
+  return img;
 }
 
 function draw(context) {
@@ -178,4 +206,5 @@ export default {
   getOffsetY,
   handleClick,
   handleEdgePan,
+  drawCanvasTexture,
 };

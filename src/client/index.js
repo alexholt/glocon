@@ -144,7 +144,7 @@ function initializeGL(gl) {
   positionBuffer = gl.createBuffer();
   texcoordBuffer = gl.createBuffer();
 
-  positions = new Float32Array(makeRectAt(0, 0, 500, 282));
+  positions = new Float32Array(makeRectAt(0, 0, 2000, 1000));
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
 
@@ -217,19 +217,16 @@ function loadImage() {
     texture: tex,
   };
 
-  const img = new Image();
-  img.crossOrigin = '';
-
-  img.addEventListener('load', function() {
+  const img = Map.drawCanvasTexture(() => {
     textureInfo.width = img.width;
     textureInfo.height = img.height;
 
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, textureInfo.texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+
   });
 
-  img.src = require('./images/santa_world.gif');
   return textureInfo;
 }
 
