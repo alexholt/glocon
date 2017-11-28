@@ -50,25 +50,26 @@ function drawCanvasTexture(cb) {
 
   for (let i = 0; i < paths.length; i++) {
     const path = paths[i];
-    let encodedColor = `${i}`;
+    let encodedColor = `${i.toString(16)}`;
     encodedColor = `#${padStart(encodedColor, 6, '0')}`;
 
     path.setAttribute('fill', `${encodedColor}`);
     path.removeAttribute('inkscape:connector-curvature');
     path.removeAttribute('data-name');
     path.removeAttribute('data-id');
+    path.setAttribute('stroke-width', '0');
   }
 
-  const context = document.createElement('canvas').getContext('2d');
   const img = new Image();
   const svg = map.querySelector('svg');
+
   svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   svg.setAttribute('width', '16000');
   svg.setAttribute('height', '8000');
   img.crossOrigin = '';
   img.addEventListener('load', cb);
   img.src = `data:image/svg+xml,${encodeURI(map.innerHTML).replace(/#/g, '%23')}`;
-  //context.drawImage(img, 0, 0);
+
   return img;
 }
 
@@ -166,7 +167,8 @@ function getOffsetY() {
 }
 
 function handleClick({pageX, pageY}) {
-  lastClickedPoint = [pageX * zoomDelta + x, pageY * zoomDelta + y];
+  lastClickedPoint = [Math.round(pageX / zoomDelta + x), Math.round(pageY / zoomDelta + y)];
+  return lastClickedPoint;
 }
 
 function setActive(name) {

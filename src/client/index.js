@@ -8,6 +8,7 @@ import UI from './ui';
 let gl;
 
 let isPanning = false;
+let lookupMap;
 let lastX;
 let lastY;
 let lastFrame;
@@ -24,6 +25,8 @@ let textureLocation;
 let texcoordAttributeLocation;
 let texcoordBuffer;
 let mapTexInfo;
+let selectedTerritoryId;
+let selectedTerritoryIdLocation;
 
 function initialize() {
   initializeFPS();
@@ -109,7 +112,17 @@ function initialize() {
   document.addEventListener('touchend', end);
 
   document.addEventListener('click', (event) => {
-    Map.handleClick(event);
+    const point = Map.handleClick(event);
+    const context = document.createElement('canvas').getContext('2d');
+
+    context.canvas.width = 2000;
+    context.canvas.height = 1000;
+    context.canvas.style.width = '2000px';
+    context.canvas.style.height = '1000px';
+    context.drawImage(lookupMap, 0, 0, 2000, 1000);
+
+    const data = context.getImageData(0, 0, 2000, 1000).data;
+    selectedTerritoryId = data[(point[0] + point[1] * 2000) * 4 + 1] * 256 + data[(point[0] + point[1] * 2000) * 4 + 2];
   });
 
   //UI.initialize();
@@ -140,6 +153,7 @@ function initializeGL(gl) {
   textureLocation = gl.getUniformLocation(program, 'u_texture');
   resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution');
   positionUniformLocation = gl.getUniformLocation(program, 'u_position');
+  selectedTerritoryIdLocation = gl.getUniformLocation(program, 'u_selectedTerritoryId');
 
   positionBuffer = gl.createBuffer();
   texcoordBuffer = gl.createBuffer();
@@ -175,6 +189,7 @@ function render(timestamp) {
   gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
   gl.uniform3f(positionUniformLocation, -Map.getOffsetX(), -Map.getOffsetY(), Map.getScale());
   gl.uniform1i(textureLocation, 0);
+  gl.uniform1i(selectedTerritoryIdLocation, selectedTerritoryId);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   
@@ -217,14 +232,13 @@ function loadImage() {
     texture: tex,
   };
 
-  const img = Map.drawCanvasTexture(() => {
-    textureInfo.width = img.width;
-    textureInfo.height = img.height;
+  lookupMap = Map.drawCanvasTexture(() => {
+    textureInfo.width = lookupMap.width;
+    textureInfo.height = lookupMap.height;
 
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, textureInfo.texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, lookupMap);
   });
 
   return textureInfo;
