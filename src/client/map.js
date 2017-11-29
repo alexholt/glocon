@@ -69,7 +69,14 @@ export default class Map {
     img.addEventListener('load', cb);
     img.src = `data:image/svg+xml,${encodeURI(map.innerHTML).replace(/#/g, '%23')}`;
 
-    return img;
+    // FF (58.0b7) will give an error if we try to use the img directly as a texture, possible FF bug
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 16000;
+    canvas.height = 8000;
+    context.drawImage(img, 0, 0);
+
+    return canvas;
   }
 
   pan(deltaX, deltaY) {
