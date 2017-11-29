@@ -63,20 +63,12 @@ export default class Map {
     const svg = map.querySelector('svg');
 
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    svg.setAttribute('width', '16000');
-    svg.setAttribute('height', '8000');
+    svg.setAttribute('width', '8000');
+    svg.setAttribute('height', '4000');
     img.crossOrigin = '';
     img.addEventListener('load', cb);
     img.src = `data:image/svg+xml,${encodeURI(map.innerHTML).replace(/#/g, '%23')}`;
-
-    // FF (58.0b7) will give an error if we try to use the img directly as a texture, possible FF bug
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = 16000;
-    canvas.height = 8000;
-    context.drawImage(img, 0, 0);
-
-    return canvas;
+    return img;
   }
 
   pan(deltaX, deltaY) {

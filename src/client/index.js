@@ -29,7 +29,7 @@ let mapTexInfo;
 let selectedTerritoryId;
 let selectedTerritoryIdLocation;
 let map;
-let tank;
+let tanks = [];
 
 function initialize() {
   initializeFPS();
@@ -39,7 +39,10 @@ function initialize() {
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
   map = new Map(0, 0, 2000, 1000, window.innerWidth, window.innerHeight, require('./images/world.svg'));
-  tank = new Unit(350, 350, 50, 50, require('./images/2x/tank@2x.png'));
+
+  for (let i = 0; i < 100; i++) {
+    tanks.push(new Unit(300 + i * 10, 300 + i * 10, 50, 50, require('./images/2x/tank@2x.png')));
+  }
 
   //UnitManager.init(Map.getTerritories());
 
@@ -149,7 +152,10 @@ function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
   map.render(gl);
-  tank.render(gl, {x: map.getOffsetX() / map.getScale(), y: map.getOffsetY() / map.getScale()});
+
+  tanks.forEach(tank =>
+    tank.render(gl, {x: map.getOffsetX() / map.getScale(), y: map.getOffsetY() / map.getScale()})
+  );
 
   stats.update();
   window.requestAnimationFrame(render);
