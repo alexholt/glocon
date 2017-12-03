@@ -1,7 +1,8 @@
 import { scaleCanvas, createProgram, makeRectAt } from './canvas_tools';
 import { throttle } from 'lodash';
+import Camera from './camera';
 import Map from './map';
-import UnitManager from './unit_manager';
+import UnitRepository from './unit_repository';
 import Stats from 'stats.js';
 import UI from './ui';
 import Unit from './unit';
@@ -29,7 +30,8 @@ let mapTexInfo;
 let selectedTerritoryId;
 let selectedTerritoryIdLocation;
 let map;
-let tanks = [];
+let unitRepo;
+let camera;
 
 function initialize() {
   initializeFPS();
@@ -39,12 +41,9 @@ function initialize() {
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
   map = new Map(0, 0, 2000, 1000, window.innerWidth, window.innerHeight, require('./images/world.svg'));
+  camera = new Camera();
 
-  for (let i = 0; i < 100; i++) {
-    tanks.push(new Unit(300 + i * 10, 300 + i * 10, 50, 50, require('./images/2x/tank@2x.png')));
-  }
-
-  //UnitManager.init(Map.getTerritories());
+  unitRepo = new UnitRepository(map.getTerritories());
 
   scaleCanvas(gl, window.innerWidth, window.innerHeight);
 
@@ -63,7 +62,7 @@ function initialize() {
     // https://w3c.github.io/uievents/#idl-wheelevent
     if (event.deltaMode === 1) deltaY *= 20;
 
-    map.zoom(event.pageX, event.pageY, deltaY);
+    camera.zoom(event.pageX, event.pageY, deltaY);
   }, 50));
 
   const down = event => {
@@ -102,7 +101,7 @@ function initialize() {
       return;
     }
 
-    map.pan(deltaX, deltaY);
+    camera.pan(deltaX, deltaY);
   };
 
   document.addEventListener('mousemove', up);
@@ -145,17 +144,14 @@ function initializeFPS() {
 
 function render(timestamp) {
   //map.handleEdgePan(lastX, lastY);
-  //UnitManager.draw(context, Map.getScale(), Map.getOffsetX(), Map.getOffsetY());
 
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   gl.clearColor(1, 0, 0.8, 1);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  map.render(gl);
+  map.render(gl, camera.getMatrix());
 
-  tanks.forEach(tank =>
-    tank.render(gl, {x: map.getOffsetX() / map.getScale(), y: map.getOffsetY() / map.getScale()})
-  );
+  //unitRepo.render(gl, map.getScale(), map.getOffsetX(), map.getOffsetY());
 
   stats.update();
   window.requestAnimationFrame(render);

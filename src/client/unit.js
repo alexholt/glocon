@@ -105,7 +105,7 @@ export default class Unit {
     gl.useProgram(this.program);
 
     gl.uniform2f(this.resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
-    gl.uniform2f(this.positionUniformLocation, this.x - mapPosition.x, this.y - mapPosition.y);
+    gl.uniform2f(this.positionUniformLocation, mapPosition.x, mapPosition.y);
     gl.uniform1i(this.textureLocation, 0);
 
     gl.bindTexture(gl.TEXTURE_2D, this.textureInfo.texture);

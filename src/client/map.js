@@ -1,4 +1,7 @@
+import Matrix4 from './matrix4';
 import Territory from './territory';
+import Vector3 from './vector3';
+
 import { cloneDeep, padStart } from 'lodash';
 import { createProgram, makeRectAt } from './canvas_tools';
 
@@ -36,10 +39,12 @@ export default class Map {
 
     this.texture.src = require('./images/2x/terrain@2x.png');
 
+    this.territories = {};
+
     for (let i = 0; i < paths.length; i++) {
       const territory = paths[i];
       const pathData = territory.getAttribute('d');
-      territories[territory.getAttribute('data-name')] = new Territory(pathData);
+      this.territories[territory.getAttribute('data-name')] = new Territory(pathData);
     }
   }
 
@@ -69,21 +74,6 @@ export default class Map {
     img.addEventListener('load', cb);
     img.src = `data:image/svg+xml,${encodeURI(map.innerHTML).replace(/#/g, '%23')}`;
     return img;
-  }
-
-  pan(deltaX, deltaY) {
-    this.x += deltaX * this.zoomDelta;
-    this.y += deltaY * this.zoomDelta;
-  }
-
-  zoom(zoomX, zoomY, delta) {
-    const oldDelta = this.zoomDelta;
-    this.zoomDelta += delta * 0.00025;
-    this.zoomDelta = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, this.zoomDelta));
-    const scaleChange = this.zoomDelta - oldDelta;
-
-    this.x -= (zoomX - this.width / 2) * scaleChange;
-    this.y -= (zoomY - this.height / 2) * scaleChange;
   }
 
   getTerritories() {
@@ -159,11 +149,13 @@ export default class Map {
     this.resolutionUniformLocation = gl.getUniformLocation(this.program, 'u_resolution');
     this.positionUniformLocation = gl.getUniformLocation(this.program, 'u_position');
     this.selectedTerritoryIdLocation = gl.getUniformLocation(this.program, 'u_selectedTerritoryId');
+    this.cameraMatrixLocation = gl.getUniformLocation(this.program, 'u_camera');
 
     this.positionBuffer = gl.createBuffer();
     this.texcoordBuffer = gl.createBuffer();
 
     this.positions = new Float32Array(makeRectAt(this.mapX, this.mapY, this.mapWidth, this.mapHeight));
+
     gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, this.positions, gl.STATIC_DRAW);
 
@@ -217,21 +209,20 @@ export default class Map {
     return this.textureInfo;
   }
 
-  render(gl) {
+  render(gl, cameraMatrix) {
     if (!this.isInit) this.initialize(gl);
     gl.useProgram(this.program);
 
-    gl.uniform2f(this.resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
-    gl.uniform3f(this.positionUniformLocation, -this.x, -this.y, this.zoomDelta);
     gl.uniform1i(this.textureLocation, 0);
     gl.uniform1i(this.selectedTerritoryIdLocation, this.selectedTerritoryId);
+    gl.uniformMatrix4fv(this.cameraMatrixLocation, false, cameraMatrix.array);
 
     gl.bindTexture(gl.TEXTURE_2D, this.textureInfo.texture);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
 
     gl.enableVertexAttribArray(this.positionAttributeLocation);
-    gl.vertexAttribPointer(this.positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(this.positionAttributeLocation, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.texcoordBuffer);
 
