@@ -61,11 +61,11 @@ export default class Vector3 {
   }
 
   validate(array = this.array) {
-    if (!(array instanceof Float32Array)) {
-      throw new TypeError(
-        `Expected an array of type Float32Array but received an array of type ${array.constructor.name}`
-      );
-    }
+    array.forEach((val, i) => {
+      if (isNaN(val) || typeof val !== 'number') {
+        throw new TypeError(`Expected all values to be numbers but value at index ${i} is ${val}`);
+      }
+    });
 
     if (array.length !== 3) {
       throw new TypeError(`Expected an array of length 3 but received an array of length ${array.length}`);
@@ -98,7 +98,7 @@ export default class Vector3 {
     return new Vector3([
       this[1] * other[2] - this[2] * other[1],
       this[2] * other[0] - this[0] * other[2],
-      this[0] * other[1] - this[1] * other[0]
+      this[0] * other[1] - this[1] * other[0],
     ]);
   }
 
@@ -121,4 +121,16 @@ export default class Vector3 {
     return Math.sqrt(this.dot(this));
   }
 
+  toString() {
+    return `[ ${this.x}, ${this.y}, ${this.z} ]`;
+  }
+
+  isEqual(other) {
+    return Math.abs(this.x - other.x) < this.EPSILON &&
+      Math.abs(this.y - other.y) < this.EPSILON &&
+      Math.abs(this.z - other.z) < this.EPSILON;
+  }
+
 }
+
+Vector3.prototype.EPSILON = 1e-9;
