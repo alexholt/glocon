@@ -1,4 +1,4 @@
-import { scaleCanvas, createProgram, makeRectAt } from './canvas_tools';
+import { scaleCanvas, createProgram } from './canvas_tools';
 import { throttle } from 'lodash';
 import Camera from './camera';
 import Map from './map';
@@ -40,7 +40,7 @@ function initialize() {
   gl = canvas.getContext('webgl');
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-  map = new Map(0, 0, 2000, 1000, window.innerWidth, window.innerHeight, require('./images/world.svg'));
+  map = new Map(require('./images/world.svg'));
   camera = new Camera();
 
   unitRepo = new UnitRepository(map.getTerritories());

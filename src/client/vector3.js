@@ -110,6 +110,8 @@ export default class Vector3 {
     const mag = this.computeMagnitude();
     const vec = new Vector3(this);
 
+    if (mag === 0) return vec;
+
     vec.forEach((val, i) => {
       vec[i] = val / mag;
     });

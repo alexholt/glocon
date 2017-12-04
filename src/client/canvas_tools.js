@@ -54,10 +54,10 @@ function createShader(gl, type, source) {
 export function makeRectAt(x, y, width, height) {
   return [
     x, y, 0,
-    x, y + height, 0,
     x + width, y, 0,
+    x, y - height, 0,
+    x, y - height, 0,
     x + width, y, 0,
-    x, y + height, 0,
-    x + width, y + height, 0,
+    x + width, y - height, 0,
   ];
 }

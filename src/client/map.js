@@ -13,16 +13,12 @@ const territories = {};
 
 export default class Map {
 
-  constructor(mapX, mapY, mapWidth, mapHeight, canvasWidth, canvasHeight, map) {
-    this.mapX = mapX;
-    this.mapY = mapY;
-    this.mapWidth = mapWidth;
-    this.mapHeight = mapHeight;
-    this.width = canvasWidth;
-    this.height = canvasHeight;
+  constructor(map) {
+    this.mapX = 0;
+    this.mapY = 0;
+    this.mapWidth = 2;
+    this.mapHeight = 1;
     this.zoomDelta = 1;
-    this.x = 0;
-    this.y = 0;
     this.active = '';
     this.lastActive = {};
     this.isInit = false;
@@ -161,10 +157,10 @@ export default class Map {
 
     this.texcoords = [
       0, 0,
-      0, 1,
-      1, 0,
       1, 0,
       0, 1,
+      0, 1,
+      1, 0,
       1, 1,
     ];
 
