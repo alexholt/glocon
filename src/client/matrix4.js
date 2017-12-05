@@ -292,14 +292,14 @@ export default class Matrix4 {
   }
 
   static makePerspective(fov, aspect) {
-    const S = Math.tan(fov / 2 * Math.PI / 180);
-    const f = -1;
-    const n = 1;
+    const S = 1 / Math.tan(fov / 2 * Math.PI / 180);
+    const f = 100;
+    const n = -100;
     return new Matrix4([
-      S / aspect, 0, 0, 0,
-      0, S, 0, 0,
-      0, 0, f / (n - f), -1,
-      0, 0, (f * n) / (n - f) * 2, 0,
+      S / aspect, 0, 0,                     0,
+      0,          S, 0,                     0,
+      0,          0, (n + f) / (n - f),    -1,
+      0,          0, (f * n) / (n - f) * 2, 0,
     ]);
   }
 
@@ -309,6 +309,26 @@ export default class Matrix4 {
       0, 1, 0, 0,
       0, 0, 1, 0,
       0, 0, 0, 1,
+    ]);
+  }
+
+  static makeScale(w, h, d) {
+    h = h || w;
+    d = d || w;
+    return new Matrix4([
+      w, 0, 0, 0,
+      0, h, 0, 0,
+      0, 0, d, 0,
+      0, 0, 0, 1,
+    ]);
+  }
+
+  static makeTranslate(x, y, z) {
+    return new Matrix4([
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      x, y, z, 1,
     ]);
   }
 

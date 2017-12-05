@@ -14,9 +14,9 @@ const territories = {};
 export default class Map {
 
   constructor(map) {
-    this.mapX = 0;
-    this.mapY = 0;
-    this.mapWidth = 2;
+    this.mapX = -0.5;
+    this.mapY = 0.5;
+    this.mapWidth = 1;
     this.mapHeight = 1;
     this.zoomDelta = 1;
     this.active = '';
@@ -151,6 +151,7 @@ export default class Map {
     this.texcoordBuffer = gl.createBuffer();
 
     this.positions = new Float32Array(makeRectAt(this.mapX, this.mapY, this.mapWidth, this.mapHeight));
+    console.log(this.positions.toString());
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, this.positions, gl.STATIC_DRAW);
