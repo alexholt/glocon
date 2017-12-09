@@ -5,8 +5,6 @@ import Vector3 from './vector3';
 import { cloneDeep, padStart } from 'lodash';
 import { createProgram, makeRectAt } from './canvas_tools';
 
-const ZOOM_MIN = 0.025;
-const ZOOM_MAX = 10;
 const PAN_BORDER = 10;
 const CENTROID_RADIUS = 10;
 const territories = {};
@@ -14,10 +12,10 @@ const territories = {};
 export default class Map {
 
   constructor(map) {
-    this.mapX = -0.5;
-    this.mapY = 0.5;
-    this.mapWidth = 1;
-    this.mapHeight = 1;
+    this.mapX = -1;
+    this.mapY = 0;
+    this.mapWidth = 20;
+    this.mapHeight = 10;
     this.zoomDelta = 1;
     this.active = '';
     this.lastActive = {};
@@ -151,7 +149,6 @@ export default class Map {
     this.texcoordBuffer = gl.createBuffer();
 
     this.positions = new Float32Array(makeRectAt(this.mapX, this.mapY, this.mapWidth, this.mapHeight));
-    console.log(this.positions.toString());
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, this.positions, gl.STATIC_DRAW);
@@ -212,7 +209,7 @@ export default class Map {
 
     gl.uniform1i(this.textureLocation, 0);
     gl.uniform1i(this.selectedTerritoryIdLocation, this.selectedTerritoryId);
-    gl.uniformMatrix4fv(this.cameraMatrixLocation, false, cameraMatrix.array);
+    gl.uniformMatrix4fv(this.cameraMatrixLocation, false, cameraMatrix.getData());
 
     gl.bindTexture(gl.TEXTURE_2D, this.textureInfo.texture);
 

@@ -1,6 +1,7 @@
 import { scaleCanvas, createProgram } from './canvas_tools';
 import { throttle } from 'lodash';
 import Camera from './camera';
+import Cube from './cube';
 import Map from './map';
 import UnitRepository from './unit_repository';
 import Stats from 'stats.js';
@@ -30,6 +31,7 @@ let mapTexInfo;
 let selectedTerritoryId;
 let selectedTerritoryIdLocation;
 let map;
+let cube;
 let unitRepo;
 let camera;
 
@@ -39,8 +41,10 @@ function initialize() {
 
   gl = canvas.getContext('webgl');
   gl.enable(gl.BLEND);
+  gl.enable(gl.DEPTH_TEST);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
   map = new Map(require('./images/world.svg'));
+  cube = new Cube();
   camera = new Camera();
 
   unitRepo = new UnitRepository(map.getTerritories());
@@ -146,10 +150,11 @@ function render(timestamp) {
   //map.handleEdgePan(lastX, lastY);
 
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-  gl.clearColor(1, 0, 0.8, 1);
+  gl.clearColor(1, 1, 1, 1);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
   map.render(gl, camera.getMatrix());
+  cube.render(gl, camera.getMatrix(), timestamp);
 
   //unitRepo.render(gl, map.getScale(), map.getOffsetX(), map.getOffsetY());
 

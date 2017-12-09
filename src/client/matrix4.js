@@ -194,6 +194,10 @@ export default class Matrix4 {
   }
 
   multiply(other) {
+    if (other instanceof Vector3) {
+      return this.multiplyByVector3(other);
+    }
+
     const copy = new Matrix4(this);
     copy[0] = this[0] * other[0] + this[1] * other[4] + this[2] * other[8] + this[3] * other[12];
     copy[4] = this[4] * other[0] + this[5] * other[4] + this[6] * other[8] + this[7] * other[12];
@@ -205,7 +209,7 @@ export default class Matrix4 {
     copy[9] = this[8] * other[1] + this[9] * other[5] + this[10] * other[9] + this[11] * other[13];
     copy[13] = this[12] * other[1] + this[13] * other[5] + this[14] * other[9] + this[15] * other[13];
 
-    copy[2] = this[0] * other[2] + this[1] * other[6] + this[2] * other[10] + this[3] * other[14]; 
+    copy[2] = this[0] * other[2] + this[1] * other[6] + this[2] * other[10] + this[3] * other[14];
     copy[6] = this[4] * other[2] + this[5] * other[6] + this[6] * other[10] + this[7] * other[14];
     copy[10] = this[8] * other[2] + this[9] * other[6] + this[10] * other[10] + this[11] * other[14];
     copy[14] = this[12] * other[2] + this[13] * other[6] + this[14] * other[10] + this[15] * other[14];
@@ -215,6 +219,16 @@ export default class Matrix4 {
     copy[11] = this[8] * other[3] + this[9] * other[7] + this[10] * other[11] + this[11] * other[15];
     copy[15] = this[12] * other[3] + this[13] * other[7] + this[14] * other[11] + this[15] * other[15];
     return copy;
+  }
+
+  multiplyByVector3(other) {
+    const w = this[12] * other[0] + this[13] * other[1] + this[14] * other[2] + this[15] * 1;
+
+    return new Vector3([
+      (this[0] * other[0] + this[1] * other[1] + this[2] * other[2] + this[3]) / w,
+      (this[4] * other[0] + this[5] * other[1] + this[6] * other[2] + this[7]) / w,
+      (this[8] * other[0] + this[9] * other[1] + this[10] * other[2] + this[11]) / w,
+    ]);
   }
 
   isEqual(other) {
@@ -237,7 +251,7 @@ export default class Matrix4 {
         if (i % 4 === 0) {
           acc = `${acc}{ ${cur}`;
         } else {
-          acc = `${acc}, ${cur}`; 
+          acc = `${acc}, ${cur}`;
         }
 
 
@@ -263,6 +277,39 @@ export default class Matrix4 {
          ${this[12]}, ${this[13]}, ${this[14]}, ${this[15]},
       ]`
     );
+  }
+
+  transpose() {
+    return new Matrix4([
+      this.getXY(0, 0), this.getXY(0, 1), this.getXY(0, 2), this.getXY(0, 3),
+      this.getXY(1, 0), this.getXY(1, 1), this.getXY(1, 2), this.getXY(1, 3),
+      this.getXY(2, 0), this.getXY(2, 1), this.getXY(2, 2), this.getXY(2, 3),
+      this.getXY(3, 0), this.getXY(3, 1), this.getXY(3, 2), this.getXY(3, 3),
+    ]);
+  }
+
+  getData() {
+    return this.transpose().array;
+  }
+
+  translate() {
+    return this.multiply(Matrix4.makeTranslate(...arguments));
+  }
+
+  rotateX() {
+    return this.multiply(Matrix4.makeRotateX(...arguments));
+  }
+
+  rotateY() {
+    return this.multiply(Matrix4.makeRotateY(...arguments));
+  }
+
+  rotateZ() {
+    return this.multiply(Matrix4.makeRotateZ(...arguments));
+  }
+
+  scale() {
+    return this.multiply(Matrix4.makeScale(...arguments));
   }
 
   static makeOrtho(top, right, bottom, left, far = 1, near = -1) {
@@ -291,15 +338,30 @@ export default class Matrix4 {
     ]).invert();
   }
 
-  static makePerspective(fov, aspect) {
-    const S = 1 / Math.tan(fov / 2 * Math.PI / 180);
-    const f = 100;
-    const n = -100;
+  static makePerspective(fovy, aspect) {
+    const znear = -1;
+    const zfar = 1;
+    const ymax = znear * Math.tan(fovy);
+    const ymin = -ymax;
+    const xmin = ymin * aspect;
+    const xmax = ymax * aspect;
+
+    return Matrix4.makeFrustum(xmin, xmax, ymin, ymax, znear, zfar);
+  }
+
+  static makeFrustum(left, right, bottom, top, znear, zfar) {
+    const X = 2 * znear / (right - left);
+    const Y = 2 * znear / (top - bottom);
+    const A = (right + left) / (right - left);
+    const B = (top + bottom) / (top - bottom);
+    const C = -(zfar + znear) / (zfar - znear);
+    const D = -2 * zfar * znear / (zfar - znear);
+
     return new Matrix4([
-      S / aspect, 0, 0,                     0,
-      0,          S, 0,                     0,
-      0,          0, (n + f) / (n - f),    -1,
-      0,          0, (f * n) / (n - f) * 2, 0,
+      X,  0,  A,  0,
+      0,  Y,  B,  0,
+      0,  0,  C,  D,
+      0,  0,  -1,  0,
     ]);
   }
 
@@ -325,10 +387,37 @@ export default class Matrix4 {
 
   static makeTranslate(x, y, z) {
     return new Matrix4([
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      x, y, z, 1,
+      1, 0, 0, x,
+      0, 1, 0, y,
+      0, 0, 1, z,
+      0, 0, 0, 1,
+    ]);
+  }
+
+  static makeRotateX(rad) {
+    return new Matrix4([
+      1,              0,             0,   0,
+      0,  Math.cos(rad), Math.sin(rad),   0,
+      0, -Math.sin(rad), Math.cos(rad),   0,
+      0,              0,             0,   1,
+    ]);
+  }
+
+  static makeRotateY(rad) {
+    return new Matrix4([
+       Math.cos(rad), 0, -Math.sin(rad), 0,
+                   0, 1,              0, 0,
+       Math.sin(rad), 0,  Math.cos(rad), 0,
+                   0, 0,              0, 1,
+    ]);
+  }
+
+  static makeRotateZ(rad) {
+    return new Matrix4([
+       Math.cos(rad), Math.sin(rad), 0, 0,
+      -Math.sin(rad), Math.cos(rad), 0, 0,
+                   0,             0, 1, 0,
+                   0,             0, 0, 1,
     ]);
   }
 
