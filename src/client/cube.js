@@ -3,8 +3,11 @@ import { createProgram } from './canvas_tools';
 
 export default class Cube {
 
-  constructor() {
-    this.mvMatrix = Matrix4.makeIdentity().translate(5, -6, 0).scale(0.02);
+  constructor(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.mvMatrix = Matrix4.makeIdentity().translate(this.x, this.y, this.z).scale(10);
   }
 
   initialize(gl) {

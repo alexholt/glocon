@@ -8,158 +8,145 @@ import Stats from 'stats.js';
 import UI from './ui';
 import Unit from './unit';
 
-let gl;
+class App {
 
-let isPanning = false;
-let lookupMap;
-let lastX;
-let lastY;
-let lastFrame;
-let stats;
-let positionBox;
-let program;
-let positionAttributeLocation;
-let positionBuffer;
-let resolutionUniformLocation;
-let positionUniformLocation;
-let positions;
-let texcoords;
-let textureLocation;
-let texcoordAttributeLocation;
-let texcoordBuffer;
-let mapTexInfo;
-let selectedTerritoryId;
-let selectedTerritoryIdLocation;
-let map;
-let cube;
-let unitRepo;
-let camera;
+  constructor() {
+    this.isPanning = false;
+    this.initialize = this.initialize.bind(this);
+    this.render = this.render.bind(this);
+  }
 
-function initialize() {
-  initializeFPS();
-  const canvas = document.querySelector('canvas');
+  initialize() {
+    this.initializeFPS();
+    const canvas = document.querySelector('canvas');
 
-  gl = canvas.getContext('webgl');
-  gl.enable(gl.BLEND);
-  gl.enable(gl.DEPTH_TEST);
-  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-  map = new Map(require('./images/world.svg'));
-  cube = new Cube();
-  camera = new Camera();
+    const gl = this.gl = canvas.getContext('webgl');
+    gl.enable(gl.BLEND);
+    gl.enable(gl.DEPTH_TEST);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    this.map = new Map(require('./images/world.svg'));
+    const {x, y} = this.map.getTerritories()['Mexico'].getCentroid();
+    this.cube = new Cube(x, -y, 2.6);
+    this.camera = new Camera();
 
-  unitRepo = new UnitRepository(map.getTerritories());
+    this.unitRepo = new UnitRepository(this.map.getTerritories());
 
-  scaleCanvas(gl, window.innerWidth, window.innerHeight);
+    scaleCanvas(gl, window.innerWidth, window.innerHeight);
 
-  window.addEventListener('resize', () => {
-    scaleCanvas(canvas, window.innerWidth, window.innerHeight);
-  });
+    window.addEventListener('resize', () => {
+      scaleCanvas(canvas, window.innerWidth, window.innerHeight);
+    });
 
-  document.addEventListener('wheel', (event) => {
-    event.preventDefault();
-  });
+    document.addEventListener('wheel', (event) => {
+      event.preventDefault();
+    });
 
-  document.addEventListener('wheel', throttle((event) => {
-    let deltaY = event.deltaY;
+    document.addEventListener('wheel', throttle((event) => {
+      let deltaY = event.deltaY;
 
-    // FF (57.0b10) uses lines for the mousewheel scroll delta
-    // https://w3c.github.io/uievents/#idl-wheelevent
-    if (event.deltaMode === 1) deltaY *= 20;
+      // FF (57.0b10) uses lines for the mousewheel scroll delta
+      // https://w3c.github.io/uievents/#idl-wheelevent
+      if (event.deltaMode === 1) deltaY *= 20;
 
-    camera.zoom(event.pageX, event.pageY, deltaY);
-  }, 50));
+      this.camera.zoom(event.pageX, event.pageY, deltaY);
+    }, 50));
 
-  const down = event => {
-    isPanning = true;
-    let { pageX, pageY } = event;
-    if (pageX == null) {
-      ({pageX, pageY} = event.touches[0]);
-    }
-    lastX = pageX;
-    lastY = pageY;
-    canvas.style.cursor = 'move';
-  };
+    const down = event => {
+      this.isPanning = true;
+      let { pageX, pageY } = event;
+      if (pageX == null) {
+        ({pageX, pageY} = event.touches[0]);
+      }
+      this.lastX = pageX;
+      this.lastY = pageY;
+      document.body.style.cursor = 'move';
+    };
 
-  document.addEventListener('mousedown', down);
-  document.addEventListener('touchstart', down);
+    document.addEventListener('mousedown', down);
+    document.addEventListener('touchstart', down);
 
-  const up = event => {
-    let { pageX, pageY } = event;
-    if (pageX == null) {
-      ({pageX, pageY} = event.touches[0]);
-    }
-    const transformedX = pageX * map.getScale() + map.getOffsetX();
-    const transformedY = pageY * map.getScale() + map.getOffsetY();
-    positionBox.innerText =
-      `(${pageX}, ${pageY})
-      [${transformedX.toFixed(0)}, ${transformedY.toFixed(0)}]
-      Map:
-        (${map.getOffsetX()}, ${map.getOffsetY()}) @ ${map.getScale()}`;
+    const up = event => {
+      let { pageX, pageY } = event;
+      if (pageX == null) {
+        ({pageX, pageY} = event.touches[0]);
+      }
 
-    const deltaX = lastX - pageX;
-    const deltaY = lastY - pageY;
-    lastX = pageX;
-    lastY = pageY;
+      const distance = Math.abs(this.camera.z);
+      const transformedX = pageX / distance + this.camera.x;
+      const transformedY = pageY / distance + -this.camera.y;
 
-    if (!isPanning) {
-      return;
-    }
+      this.positionBox.innerText =
+        `Page: (${pageX}, ${pageY})
+         Map: (${transformedX.toFixed(0)}, ${transformedY.toFixed(0)})
+         Cam: (${this.camera.x.toFixed(2)}, ${this.camera.y.toFixed(2)}, ${this.camera.z.toFixed(2)})`;
 
-    camera.pan(deltaX, deltaY);
-  };
+      const deltaX = this.lastX - pageX;
+      const deltaY = this.lastY - pageY;
+      this.lastX = pageX;
+      this.lastY = pageY;
 
-  document.addEventListener('mousemove', up);
-  document.addEventListener('touchmove', up);
-  document.addEventListener('mouseout', (event) => {
-    isPanning = false;
-    lastX = null;
-    lastY = null;
-    canvas.style.cursor = 'default';
-  });
+      if (!this.isPanning) {
+        return;
+      }
 
-  const end = event => {
-    isPanning = false;
-    canvas.style.cursor = 'default';
-  };
+      this.camera.pan(deltaX, deltaY);
+    };
 
-  document.addEventListener('mouseup', end);
-  document.addEventListener('touchend', end);
+    document.addEventListener('mousemove', up);
+    document.addEventListener('touchmove', up);
+    document.addEventListener('mouseout', (event) => {
+      this.isPanning = false;
+      this.lastX = null;
+      this.lastY = null;
+      document.body.style.cursor = 'default';
+    });
 
-  document.addEventListener('click', (event) => {
-    map.handleClick(event);
-  });
+    const end = event => {
+      this.isPanning = false;
+      document.body.style.cursor = 'default';
+    };
 
-  //UI.initialize();
-  window.requestAnimationFrame(render);
+    document.addEventListener('mouseup', end);
+    document.addEventListener('touchend', end);
+
+    document.addEventListener('click', (event) => {
+      this.map.handleClick(event);
+    });
+
+    //UI.initialize();
+    window.requestAnimationFrame(this.render);
+  }
+
+  initializeFPS() {
+    this.stats = new Stats();
+    this.stats.dom.setAttribute(
+      'style',
+      'position: fixed; top: 10px; right: 0; font-size: 9px;'
+    );
+    this.positionBox = document.createElement('div');
+    this.positionBox.setAttribute('id', 'position');
+    this.positionBox.style.fontWeight = '800';
+    this.stats.dom.appendChild(this.positionBox);
+    document.body.appendChild(this.stats.dom);
+  }
+
+  render(timestamp) {
+    const gl = this.gl;
+
+    //map.handleEdgePan(lastX, lastY);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    gl.clearColor(0, 1, 1, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    this.map.render(gl, this.camera.getMatrix());
+    this.cube.render(gl, this.camera.getMatrix(), timestamp);
+
+    //unitRepo.render(gl, map.getScale(), map.getOffsetX(), map.getOffsetY());
+
+    this.stats.update();
+    window.requestAnimationFrame(this.render);
+  }
 }
 
-function initializeFPS() {
-  stats = new Stats();
-  stats.dom.setAttribute(
-    'style',
-    'position: fixed; top: 10px; right: 0; width: 100px'
-  );
-  positionBox = document.createElement('div');
-  positionBox.setAttribute('id', 'position');
-  positionBox.style.fontWeight = '800';
-  stats.dom.appendChild(positionBox);
-  document.body.appendChild(stats.dom);
-}
-
-function render(timestamp) {
-  //map.handleEdgePan(lastX, lastY);
-
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-  gl.clearColor(1, 1, 1, 1);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-  map.render(gl, camera.getMatrix());
-  cube.render(gl, camera.getMatrix(), timestamp);
-
-  //unitRepo.render(gl, map.getScale(), map.getOffsetX(), map.getOffsetY());
-
-  stats.update();
-  window.requestAnimationFrame(render);
-}
-
-window.addEventListener('DOMContentLoaded', initialize);
+const app = new App();
+window.addEventListener('DOMContentLoaded', app.initialize);

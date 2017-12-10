@@ -14,9 +14,8 @@ export default class Map {
   constructor(map) {
     this.mapX = -1;
     this.mapY = 0;
-    this.mapWidth = 20;
-    this.mapHeight = 10;
-    this.zoomDelta = 1;
+    this.mapWidth = 2000;
+    this.mapHeight = 1000;
     this.active = '';
     this.lastActive = {};
     this.isInit = false;
@@ -72,18 +71,6 @@ export default class Map {
 
   getTerritories() {
     return cloneDeep(this.territories);
-  }
-
-  getScale() {
-    return this.zoomDelta;
-  }
-
-  getOffsetX() {
-    return this.x;
-  }
-
-  getOffsetY() {
-    return this.y;
   }
 
   handleClick({pageX, pageY}) {
