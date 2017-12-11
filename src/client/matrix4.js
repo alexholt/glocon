@@ -338,20 +338,14 @@ export default class Matrix4 {
     ]).invert();
   }
 
-  static makePerspective(fovy, aspect) {
-    const znear = -1;
-    const zfar = 1;
-    const ymax = znear * Math.tan(fovy);
-    const ymin = -ymax;
-    const xmin = ymin * aspect;
-    const xmax = ymax * aspect;
+  static makePerspective(fovy, aspect, znear = 0.2, zfar = 1000) {
+    const top = znear * Math.tan(fovy);
+    const bottom = -top;
+    const left = bottom * aspect;
+    const right = top * aspect;
 
-    return Matrix4.makeFrustum(xmin, xmax, ymin, ymax, znear, zfar);
-  }
-
-  static makeFrustum(left, right, bottom, top, znear, zfar) {
-    const X = 2 * znear / (right - left);
-    const Y = 2 * znear / (top - bottom);
+    const Y = 1 / Math.tan(fovy / 2);
+    const X = Y / aspect;
     const A = (right + left) / (right - left);
     const B = (top + bottom) / (top - bottom);
     const C = -(zfar + znear) / (zfar - znear);

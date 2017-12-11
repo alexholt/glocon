@@ -52,12 +52,14 @@ function createShader(gl, type, source) {
 }
 
 export function makeRectAt(x, y, width, height) {
+  const z = 0.2;
+
   return [
-    x, y, 2.6,
-    x + width, y, 2.6,
-    x, y - height, 2.6,
-    x, y - height, 2.6, 
-    x + width, y, 2.6,
-    x + width, y - height, 2.6,
+    x, y, z,
+    x + width, y, z,
+    x, y - height, z,
+    x, y - height, z,
+    x + width, y, z,
+    x + width, y - height, z,
   ];
 }

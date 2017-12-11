@@ -6,20 +6,29 @@ export default class Camera {
   constructor() {
     this.up = new Vector3([0, 1, 0]);
     this.target = new Vector3([0, 0, 1]);
-    this.pos = new Vector3([-500, 300, -100]);
+    this.pos = new Vector3([-500, 300, -500]);
     this.updateMatrix();
     const ratio = window.innerWidth / window.innerHeight;
-    this.perspective = Matrix4.makePerspective(Math.PI / 4, ratio);
+    this.perspective = Matrix4.makePerspective(Math.PI / 6, ratio);
   }
 
   pan(deltaX, deltaY) {
-    const scale = Math.abs(this.pos.z);
-    const MULTIPLIER = 240; // WHY??!!!!
-    
-    this.pos.x -= deltaX / MULTIPLIER * scale;
-    this.pos.y += deltaY / MULTIPLIER * scale;
-    this.target.x = this.pos.x;
-    this.target.y = this.pos.y;
+    const cameraDistance = -this.pos.z - 0.2;
+    const probe1 = new Vector3([0, 0, -cameraDistance]);
+    const probe2 = new Vector3([1, 0, -cameraDistance]);
+    const transform = this.perspective;
+
+    const mappedProbe1 = transform.multiply(probe1);
+    const mappedProbe2 = transform.multiply(probe2);
+
+    const screenVec = new Vector3([window.innerWidth, window.innerHeight, 1]);
+    const screenSpaceProbe1 = mappedProbe1.multiply(0.5).add(0.5).multiply(screenVec);
+    const screenSpaceProbe2 = mappedProbe2.multiply(0.5).add(0.5).multiply(screenVec);
+    const screenSpaceDelta = screenSpaceProbe2.x - screenSpaceProbe1.x;
+    const ratio = 1 / screenSpaceDelta;
+
+    this.pos.x -= deltaX * ratio;
+    this.pos.y += deltaY * ratio;
     this.updateMatrix();
     return this;
   }
@@ -53,5 +62,5 @@ export default class Camera {
   }
 }
 
-Camera.prototype.ZOOM_MAX = -100;
+Camera.prototype.ZOOM_MAX = -500;
 Camera.prototype.ZOOM_MIN = -1000;

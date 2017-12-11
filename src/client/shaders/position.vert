@@ -4,10 +4,10 @@ attribute vec3 aVertexPosition;
 
 uniform mat4 cameraMatrix;
 uniform mat4 modelViewMatrix;
-varying vec3 vPos;
+varying vec4 color;
 
 void main() {
   vec4 pos = vec4(aVertexPosition, 1);
   gl_Position = cameraMatrix * modelViewMatrix * pos;
-  vPos = aVertexPosition;
+  color = vec4(aVertexPosition / 2.0 + 0.5, 1.0);
 }

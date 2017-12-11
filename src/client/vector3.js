@@ -84,11 +84,63 @@ export default class Vector3 {
     return vec;
   }
 
-  add(other) {
+  add(scalar) {
+    if (scalar instanceof Vector3) {
+      return this.addByVec3(scalar);
+    }
+
+    const vec = new Vector3(this);
+
+    vec.forEach((val, i) => {
+      vec[i] += scalar;
+    });
+
+    return vec;
+  }
+
+  addByVec3(other) {
     const vec = new Vector3(this);
 
     vec.forEach((val, i) => {
       vec[i] += other[i];
+    });
+
+    return vec;
+  }
+
+  multiply(scalar) {
+    if (scalar instanceof Vector3) {
+      return this.multiplyByVec3(scalar);
+    }
+
+    const vec = new Vector3(this);
+
+    vec.forEach((val, i) => {
+      vec[i] *= scalar
+    });
+
+    return vec;
+  }
+
+  multiplyByVec3(other) {
+    const vec = new Vector3(this);
+
+    vec.forEach((val, i) => {
+      vec[i] *= other[i];
+    });
+
+    return vec;
+  }
+
+  divide(scalar) {
+    if (scalar === 0) {
+      throw new TypeError(`Attempted to divide ${this.toString()} by zero`);
+    }
+
+    const vec = new Vector3(this);
+
+    vec.forEach((val, i) => {
+      vec[i] /= scalar
     });
 
     return vec;

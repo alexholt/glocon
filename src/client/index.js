@@ -26,7 +26,7 @@ class App {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     this.map = new Map(require('./images/world.svg'));
     const {x, y} = this.map.getTerritories()['Mexico'].getCentroid();
-    this.cube = new Cube(x, -y, 2.6);
+    this.cube = new Cube(x, -y, 0.2 + 0.5);
     this.camera = new Camera();
 
     this.unitRepo = new UnitRepository(this.map.getTerritories());
