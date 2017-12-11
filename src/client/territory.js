@@ -12,6 +12,20 @@ export default class Territory {
     return this.pathObj;
   }
 
+  // Bowyer-Watson algorithm
+  triangulate() {
+    const boundingBox = this.getBoundingBox();
+    const triangulation = [boundingBox.getSuperTriangle()];
+
+    this.pointList.forEach(point => {
+      const badTriangles = new Set();
+      triangulation.forEach(triangle => {
+        triangle.every(coord => {
+        });
+      });
+    });
+  }
+
   processToken(token) {
     token = token.toLowerCase();
     if (['m', 'v', 'h', 'z', ','].includes(token)) {
@@ -71,6 +85,8 @@ export default class Territory {
   }
 
   getPointArray() {
+    if (this.pointArray) return this.pointArray;
+
     this.pointArray = [];
     let token = '';
 

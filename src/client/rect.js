@@ -51,4 +51,12 @@ export default class Rect {
     return this.y2 - this.y;
   }
 
+  getSuperTriangle() {
+    return [
+      {x, y: this.y2},
+      {x: x, y: this.y - this.getHeight()},
+      {x: x + this.getWidth(), y: this.y2},
+    ];
+  }
+
 }

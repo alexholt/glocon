@@ -19,6 +19,7 @@ export default class Map {
     this.active = '';
     this.lastActive = {};
     this.isInit = false;
+    this.selectedTerritoryId = -1;
 
     this.svgContainer = document.createElement('section');
     this.svgContainer.innerHTML = map;
