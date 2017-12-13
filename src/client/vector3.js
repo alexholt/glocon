@@ -13,8 +13,8 @@ export default class Vector3 {
       array = new Float32Array(array);
     }
 
-    this.validate(array);
     this.array = array;
+    this.validate();
 
     for (let i = 0; i < this.array.length; i++) {
       Object.defineProperty(this, i.toString(), {
@@ -74,9 +74,23 @@ export default class Vector3 {
     return true;
   }
 
-  subtract(other) {
+  subtract(scalar) {
+    if (scalar instanceof Vector3) {
+      return this.subtractByVec3(scalar);
+    }
+
+    const other = scalar;
     const vec = new Vector3(this);
 
+    vec.forEach((val, i) => {
+      vec[i] -= other[i];
+    });
+
+    return vec;
+  }
+
+  subtractByVec3(other) {
+    const vec = new Vector3(this);
     vec.forEach((val, i) => {
       vec[i] -= other[i];
     });
@@ -100,7 +114,6 @@ export default class Vector3 {
 
   addByVec3(other) {
     const vec = new Vector3(this);
-
     vec.forEach((val, i) => {
       vec[i] += other[i];
     });

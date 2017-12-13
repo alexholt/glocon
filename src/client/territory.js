@@ -18,7 +18,7 @@ export default class Territory {
     const triangulation = [boundingBox.getSuperTriangle()];
 
     this.pointList.forEach(point => {
-      const badTriangles = new Set();
+      const badTriangles = [];
       triangulation.forEach(triangle => {
         triangle.every(coord => {
         });
@@ -96,7 +96,7 @@ export default class Territory {
         this.processToken(token);
         token = '';
       } else {
-        token += chr;  
+        token += chr;
       }
     }
 

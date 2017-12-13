@@ -22,12 +22,12 @@ describe('A Matrix with 16 components', () => {
     ).to.be.ok;
   });
 
-  xit('should be invertible', () => {
+  it('should be invertible', () => {
     let mat = Matrix4.makeIdentity();
     expect(mat.invert().isEqual(mat)).to.be.ok;
-    mat = Matrix4.makeCamera()
+    mat = Matrix4.makePerspective(20, 0.5);
     expect(
-      mat.invert().isEqual(Matrix4.parse('{{0,1,0,0},{1,0,0,0},{0,0,1,0},{0,0,-1,1}}'))
+      mat.invert().multiply(mat).isEqual(Matrix4.makeIdentity())
     ).to.be.ok;
   });
 
@@ -38,4 +38,35 @@ describe('A Matrix with 16 components', () => {
     expect(viewMatrix.multiply(cameraMatrix).isEqual(expected)).to.be.ok;
   });
 
+  it('provides a row swap method', () => {
+    const mat = new Matrix4([
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+      9, 10, 11, 12,
+      13, 14, 15, 16,
+    ]);
+
+    expect(mat.swap(0, 1).isEqual(new Matrix4([
+      5, 6, 7, 8,
+      1, 2, 3, 4,
+      9, 10, 11, 12,
+      13, 14, 15, 16,
+    ]))).to.be.ok;
+  });
+
+  it('provides a row multiply method', () => {
+    const mat = new Matrix4([
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+      9, 10, 11, 12,
+      13, 14, 15, 16,
+    ]);
+
+    expect(mat.multiplyRow(1, 2).isEqual(new Matrix4([
+      1, 2, 3, 4,
+      10, 12, 14, 16,
+      9, 10, 11, 12,
+      13, 14, 15, 16,
+    ]))).to.be.ok;
+  });
 });

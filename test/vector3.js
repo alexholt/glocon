@@ -62,4 +62,5 @@ describe('A Vector with three components', () => {
     vec = new Vector3([2, 2, 2]);
     expect(vec.computeMagnitude()).to.equal(Math.sqrt(12));
   });
+
 });

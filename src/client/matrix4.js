@@ -27,6 +27,10 @@ export default class Matrix4 {
     }
   }
 
+  clone() {
+    return new Matrix4(this);
+  }
+
   get length() {
     return this.array.length;
   }
@@ -231,6 +235,16 @@ export default class Matrix4 {
     ]);
   }
 
+  multiplyRow(row, scalar) {
+    const mat = new Matrix4(this);
+
+    for (let i = row * 4; i < row * 4 + 4; i++) {
+      mat[i] *= scalar;
+    }
+
+    return mat;
+  }
+
   isEqual(other) {
     const isIt = this.array.reduce((acc, cur, i) => {
       return acc && Math.abs(cur - other[i]) < this.EPSILON;
@@ -312,6 +326,20 @@ export default class Matrix4 {
     return this.multiply(Matrix4.makeScale(...arguments));
   }
 
+  replaceWith
+
+  swap(a, b) {
+    const mat = new Matrix4(this);
+
+    for (let i = 0; i < 4; i++) {
+      const aVal = mat[a * 4 + i];
+      mat[a * 4 + i] = mat[b * 4 + i];
+      mat[b * 4 + i] = aVal;
+    }
+
+    return mat;
+  }
+
   static makeOrtho(top, right, bottom, left, far = 1, near = -1) {
     return new Matrix4([
       2 / (right - left),                 0,                               0,                               0,
@@ -319,23 +347,6 @@ export default class Matrix4 {
       0,                                  0,                               -2 / (far - near),                0,
       (right + left) / (right - left),    (top + bottom) / (top - bottom), -(far + near) / (far - near),     1,
     ]);
-  }
-
-  static makeCamera(
-    pos = new Vector3([0, 0, 1]),
-    target = new Vector3([0, 0, -1]),
-    up = new Vector3([0, 1, 0])
-  ) {
-    const zAxis = target.subtract(pos).normalize();
-    const xAxis = up.cross(zAxis).normalize();
-    const yAxis = zAxis.cross(xAxis).normalize();
-
-    return new Matrix4([
-      0, 0, 0, 0,
-      0, 0, 0, 0,
-      0, 0, 0, 0,
-      ...pos,   1,
-    ]).invert();
   }
 
   static makePerspective(fovy, aspect, znear = 0.2, zfar = 1000) {
@@ -424,4 +435,4 @@ export default class Matrix4 {
   }
 }
 
-Matrix4.prototype.EPSILON = 1e-9;
+Matrix4.prototype.EPSILON = 1e-7;
