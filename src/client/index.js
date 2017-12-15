@@ -25,8 +25,13 @@ class App {
     gl.enable(gl.DEPTH_TEST);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     this.map = new Map(require('./images/world.svg'));
-    const {x, y} = this.map.getTerritories()['Mexico'].getCentroid();
-    this.cube = new Cube(x, -y, 0.2 + 0.5);
+
+    this.cubes = Object.keys(this.map.getTerritories()).map((key) => {
+      const ter = this.map.getTerritories()[key];
+      const {x, y} = ter.getCentroid();
+      return new Cube(x, -y, 0.2 + 0.5);
+    });
+
     this.camera = new Camera();
 
     this.unitRepo = new UnitRepository(this.map.getTerritories());
@@ -139,7 +144,13 @@ class App {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     this.map.render(gl, this.camera.getMatrix());
-    this.cube.render(gl, this.camera.getMatrix(), timestamp);
+    const first = this.cubes[0];
+    if (!first.isInit) {
+      first.initialize(gl);
+      return window.requestAnimationFrame(this.render);
+    }
+    //first.render(gl, this.camera.getMatrix(), timestamp, true, first.program);
+    this.cubes.forEach((cube, i) => cube.render(gl, this.camera.getMatrix(), timestamp, i === 0, first.program, first.positionAttributeLocation, first.cameraMatrixLocation, first.modelMatrixLocation));
 
     //unitRepo.render(gl, map.getScale(), map.getOffsetX(), map.getOffsetY());
 

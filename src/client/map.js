@@ -88,10 +88,8 @@ export default class Map {
       this.lookupData = context.getImageData(0, 0, 2000, 1000).data;
     }
 
-    this.selectedTerritoryId = this.lookupData[(point[0] + point[1] * 2000) * 4 + 1] * 256 +
-      this.lookupData[(point[0] + point[1] * 2000) * 4 + 2];
-
-    return this.lastClickedPoint;
+    //this.selectedTerritoryId = this.lookupData[(point[0] + point[1] * 2000) * 4 + 1] * 256 +
+    //  this.lookupData[(point[0] + point[1] * 2000) * 4 + 2];
   }
 
   setActive(name) {

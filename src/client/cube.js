@@ -8,9 +8,25 @@ export default class Cube {
     this.y = y;
     this.z = z;
     this.mvMatrix = Matrix4.makeIdentity().translate(this.x, this.y, this.z).scale(10);
+    this.isDuringInit = false;
+    this.indices = new Uint16Array([
+      0,  1,  2,   0,  2,  3,     // front
+      4,  5,  6,   4,  6,  7,     // back
+      8,  9,  10,  8,  10, 11,    // top
+      12, 13, 14,  12, 14, 15,    // bottom
+      16, 17, 18,  16, 18, 19,    // right
+      20, 21, 22,  20, 22, 23,    // left
+    ]);
+
   }
 
   initialize(gl) {
+    if (this.isDuringInit) {
+      return;
+    }
+
+    this.isDuringInit = true;
+
     this.program  = createProgram(gl, require('./shaders/position.vert'), require('./shaders/color.frag'));
     //this.mapTexInfo = this.loadImage(gl);
 
@@ -83,15 +99,6 @@ export default class Cube {
     //gl.bindBuffer(gl.ARRAY_BUFFER, this.texcoordBuffer);
     //gl.bufferData(gl.ARRAY_BUFFER, this.texcoords, gl.STATIC_DRAW);
 
-    this.indices = new Uint16Array([
-      0,  1,  2,   0,  2,  3,     // front
-      4,  5,  6,   4,  6,  7,     // back
-      8,  9,  10,  8,  10, 11,    // top
-      12, 13, 14,  12, 14, 15,    // bottom
-      16, 17, 18,  16, 18, 19,    // right
-      20, 21, 22,  20, 22, 23,    // left
-    ]);
-
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indicesBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indices, gl.STATIC_DRAW);
     this.isInit = true;
@@ -133,33 +140,25 @@ export default class Cube {
     return this.textureInfo;
   }
 
-  render(gl, cameraMatrix, time) {
+  render(gl, cameraMatrix, time, isFirst, program, positionAttributeLocation = this.positionAttributeLocation, cameraMatrixLocation = this.cameraMatrixLocation, modelMatrixLocation = this.modelMatrixLocation) {
     this.lastTime = this.lastTime || time;
     const elapsed = (time - this.lastTime) / 10000;
     this.lastTime = time;
 
-    if (!this.isInit) this.initialize(gl);
+    if (isFirst && !this.isInit) this.initialize(gl);
 
-    this.mvMatrix = this.mvMatrix
-      .rotateZ(2 * Math.PI * elapsed);
+    this.mvMatrix = this.mvMatrix.rotateZ(2 * Math.PI * elapsed);
 
-    gl.useProgram(this.program);
+    gl.useProgram(program);
 
-    gl.uniformMatrix4fv(this.cameraMatrixLocation, false, cameraMatrix.getData());
-    gl.uniformMatrix4fv(this.modelMatrixLocation, false, this.mvMatrix.getData());
+    if (isFirst) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
+      gl.enableVertexAttribArray(positionAttributeLocation);
+      gl.vertexAttribPointer(positionAttributeLocation, 3, gl.FLOAT, false, 0, 0);
+    }
 
-    //gl.bindTexture(gl.TEXTURE_2D, this.textureInfo.texture);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-
-    gl.enableVertexAttribArray(this.positionAttributeLocation);
-    gl.vertexAttribPointer(this.positionAttributeLocation, 3, gl.FLOAT, false, 0, 0);
-
-    //gl.bindBuffer(gl.ELEMENT_BUFFER, this.indicesBuffer);
-    //gl.bindBuffer(gl.ARRAY_BUFFER, this.texcoordBuffer);
-
-    //gl.enableVertexAttribArray(this.texcoordAttributeLocation);
-    //gl.vertexAttribPointer(this.texcoordAttributeLocation, 3, gl.FLOAT, false, 0, 0);
+    gl.uniformMatrix4fv(cameraMatrixLocation, false, cameraMatrix.getData());
+    gl.uniformMatrix4fv(modelMatrixLocation, false, this.mvMatrix.getData());
 
     gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
   }
