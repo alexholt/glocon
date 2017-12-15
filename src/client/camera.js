@@ -7,9 +7,9 @@ export default class Camera {
     this.up = new Vector3([0, 1, 0]);
     this.target = new Vector3([0, 0, 1]);
     this.pos = new Vector3([-500, 300, -500]);
-    this.updateMatrix();
     const ratio = window.innerWidth / window.innerHeight;
     this.perspective = Matrix4.makePerspective(Math.PI / 6, ratio);
+    this.updateMatrix();
   }
 
   pan(deltaX, deltaY) {
@@ -41,11 +41,11 @@ export default class Camera {
   }
 
   getMatrix() {
-    return this.perspective.multiply(this.cameraMatrix);
+    return this.matrix;
   }
 
   updateMatrix() {
-    this.cameraMatrix = Matrix4.makeTranslate(this.pos.x, this.pos.y, this.pos.z);
+    this.matrix = this.perspective.clone().multiply(Matrix4.makeTranslate(this.pos.x, this.pos.y, this.pos.z));
     return this;
   }
 

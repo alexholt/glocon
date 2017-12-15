@@ -202,27 +202,44 @@ export default class Matrix4 {
       return this.multiplyByVector3(other);
     }
 
-    const copy = new Matrix4(this);
-    copy[0] = this[0] * other[0] + this[1] * other[4] + this[2] * other[8] + this[3] * other[12];
-    copy[4] = this[4] * other[0] + this[5] * other[4] + this[6] * other[8] + this[7] * other[12];
-    copy[8] = this[8] * other[0] + this[9] * other[4] + this[10] * other[8] + this[11] * other[12];
-    copy[12] = this[12] * other[0] + this[13] * other[4] + this[14] * other[8] + this[15] * other[12];
+    const i0 = this.array[0] * other[0] + this.array[1] * other[4] + this.array[2] * other[8] + this.array[3] * other[12];
+    const i4 = this.array[4] * other[0] + this.array[5] * other[4] + this.array[6] * other[8] + this.array[7] * other[12];
+    const i8 = this.array[8] * other[0] + this.array[9] * other[4] + this.array[10] * other[8] + this.array[11] * other[12];
+    const i12 = this.array[12] * other[0] + this.array[13] * other[4] + this.array[14] * other[8] + this.array[15] * other[12];
 
-    copy[1] = this[0] * other[1] + this[1] * other[5] + this[2] * other[9] + this[3] * other[13];
-    copy[5] = this[4] * other[1] + this[5] * other[5] + this[6] * other[9] + this[7] * other[13];
-    copy[9] = this[8] * other[1] + this[9] * other[5] + this[10] * other[9] + this[11] * other[13];
-    copy[13] = this[12] * other[1] + this[13] * other[5] + this[14] * other[9] + this[15] * other[13];
+    const i1 = this.array[0] * other[1] + this.array[1] * other[5] + this.array[2] * other[9] + this.array[3] * other[13];
+    const i5 = this.array[4] * other[1] + this.array[5] * other[5] + this.array[6] * other[9] + this.array[7] * other[13];
+    const i9 = this.array[8] * other[1] + this.array[9] * other[5] + this.array[10] * other[9] + this.array[11] * other[13];
+    const i13 = this.array[12] * other[1] + this.array[13] * other[5] + this.array[14] * other[9] + this.array[15] * other[13];
 
-    copy[2] = this[0] * other[2] + this[1] * other[6] + this[2] * other[10] + this[3] * other[14];
-    copy[6] = this[4] * other[2] + this[5] * other[6] + this[6] * other[10] + this[7] * other[14];
-    copy[10] = this[8] * other[2] + this[9] * other[6] + this[10] * other[10] + this[11] * other[14];
-    copy[14] = this[12] * other[2] + this[13] * other[6] + this[14] * other[10] + this[15] * other[14];
+    const i2 = this.array[0] * other[2] + this.array[1] * other[6] + this.array[2] * other[10] + this.array[3] * other[14];
+    const i6 = this.array[4] * other[2] + this.array[5] * other[6] + this.array[6] * other[10] + this.array[7] * other[14];
+    const i10 = this.array[8] * other[2] + this.array[9] * other[6] + this.array[10] * other[10] + this.array[11] * other[14];
+    const i14 = this.array[12] * other[2] + this.array[13] * other[6] + this.array[14] * other[10] + this.array[15] * other[14];
 
-    copy[3] = this[0] * other[3] + this[1] * other[7] + this[2] * other[11] + this[3] * other[15];
-    copy[7] = this[4] * other[3] + this[5] * other[7] + this[6] * other[11] + this[7] * other[15];
-    copy[11] = this[8] * other[3] + this[9] * other[7] + this[10] * other[11] + this[11] * other[15];
-    copy[15] = this[12] * other[3] + this[13] * other[7] + this[14] * other[11] + this[15] * other[15];
-    return copy;
+    const i3 = this.array[0] * other[3] + this.array[1] * other[7] + this.array[2] * other[11] + this.array[3] * other[15];
+    const i7 = this.array[4] * other[3] + this.array[5] * other[7] + this.array[6] * other[11] + this.array[7] * other[15];
+    const i11 = this.array[8] * other[3] + this.array[9] * other[7] + this.array[10] * other[11] + this.array[11] * other[15];
+    const i15 = this.array[12] * other[3] + this.array[13] * other[7] + this.array[14] * other[11] + this.array[15] * other[15];
+
+    this.array[0] = i0;
+    this.array[1] = i1;
+    this.array[2] = i2;
+    this.array[3] = i3;
+    this.array[4] = i4;
+    this.array[5] = i5;
+    this.array[6] = i6;
+    this.array[7] = i7;
+    this.array[8] = i8;
+    this.array[9] = i9;
+    this.array[10] = i10;
+    this.array[11] = i11;
+    this.array[12] = i12;
+    this.array[13] = i13;
+    this.array[14] = i14;
+    this.array[15] = i15;
+
+    return this;
   }
 
   multiplyByVector3(other) {
@@ -245,6 +262,46 @@ export default class Matrix4 {
     return mat;
   }
 
+  multiplyByVal() {
+    const i0 = this.array[0] * arguments[0] + this.array[1] * arguments[4] + this.array[2] * arguments[8] + this.array[3] * arguments[12];
+    const i4 = this.array[4] * arguments[0] + this.array[5] * arguments[4] + this.array[6] * arguments[8] + this.array[7] * arguments[12];
+    const i8 = this.array[8] * arguments[0] + this.array[9] * arguments[4] + this.array[10] * arguments[8] + this.array[11] * arguments[12];
+    const i12 = this.array[12] * arguments[0] + this.array[13] * arguments[4] + this.array[14] * arguments[8] + this.array[15] * arguments[12];
+
+    const i1 = this.array[0] * arguments[1] + this.array[1] * arguments[5] + this.array[2] * arguments[9] + this.array[3] * arguments[13];
+    const i5 = this.array[4] * arguments[1] + this.array[5] * arguments[5] + this.array[6] * arguments[9] + this.array[7] * arguments[13];
+    const i9 = this.array[8] * arguments[1] + this.array[9] * arguments[5] + this.array[10] * arguments[9] + this.array[11] * arguments[13];
+    const i13 = this.array[12] * arguments[1] + this.array[13] * arguments[5] + this.array[14] * arguments[9] + this.array[15] * arguments[13];
+
+    const i2 = this.array[0] * arguments[2] + this.array[1] * arguments[6] + this.array[2] * arguments[10] + this.array[3] * arguments[14];
+    const i6 = this.array[4] * arguments[2] + this.array[5] * arguments[6] + this.array[6] * arguments[10] + this.array[7] * arguments[14];
+    const i10 = this.array[8] * arguments[2] + this.array[9] * arguments[6] + this.array[10] * arguments[10] + this.array[11] * arguments[14];
+    const i14 = this.array[12] * arguments[2] + this.array[13] * arguments[6] + this.array[14] * arguments[10] + this.array[15] * arguments[14];
+
+    const i3 = this.array[0] * arguments[3] + this.array[1] * arguments[7] + this.array[2] * arguments[11] + this.array[3] * arguments[15];
+    const i7 = this.array[4] * arguments[3] + this.array[5] * arguments[7] + this.array[6] * arguments[11] + this.array[7] * arguments[15];
+    const i11 = this.array[8] * arguments[3] + this.array[9] * arguments[7] + this.array[10] * arguments[11] + this.array[11] * arguments[15];
+    const i15 = this.array[12] * arguments[3] + this.array[13] * arguments[7] + this.array[14] * arguments[11] + this.array[15] * arguments[15];
+
+    this.array[0] = i0;
+    this.array[1] = i1;
+    this.array[2] = i2;
+    this.array[3] = i3;
+    this.array[4] = i4;
+    this.array[5] = i5;
+    this.array[6] = i6;
+    this.array[7] = i7;
+    this.array[8] = i8;
+    this.array[9] = i9;
+    this.array[10] = i10;
+    this.array[11] = i11;
+    this.array[12] = i12;
+    this.array[13] = i13;
+    this.array[14] = i14;
+    this.array[15] = i15;
+
+    return this;
+  }
   isEqual(other) {
     const isIt = this.array.reduce((acc, cur, i) => {
       return acc && Math.abs(cur - other[i]) < this.EPSILON;
@@ -303,7 +360,7 @@ export default class Matrix4 {
   }
 
   getData() {
-    return this.transpose().array;
+    return this.array;
   }
 
   translate() {
@@ -318,8 +375,13 @@ export default class Matrix4 {
     return this.multiply(Matrix4.makeRotateY(...arguments));
   }
 
-  rotateZ() {
-    return this.multiply(Matrix4.makeRotateZ(...arguments));
+  rotateZ(rad) {
+    return this.multiplyByVal(
+      Math.cos(rad), Math.sin(rad), 0, 0,
+      -Math.sin(rad), Math.cos(rad), 0, 0,
+      0,             0, 1, 0,
+      0,             0, 0, 1,
+    );
   }
 
   scale() {

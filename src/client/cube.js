@@ -147,7 +147,7 @@ export default class Cube {
 
     if (isFirst && !this.isInit) this.initialize(gl);
 
-    this.mvMatrix = this.mvMatrix.rotateZ(2 * Math.PI * elapsed);
+    this.mvMatrix.rotateZ(2 * Math.PI * elapsed);
 
     gl.useProgram(program);
 
